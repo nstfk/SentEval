@@ -28,18 +28,10 @@ PTBTOKENIZER="sed -f tokenizer.sed"
 
 mkdir $data_path
 
-TREC='http://cogcomp.cs.illinois.edu/Data/QA/QC'
-SICK='http://alt.qcri.org/semeval2014/task1/data/uploads'
-BINCLASSIF='https://s3.amazonaws.com/senteval/senteval_data/datasmall_NB_ACL12.zip'
-SSTbin='https://raw.githubusercontent.com/PrincetonML/SIF/master/data'
-SSTfine='https://raw.githubusercontent.com/AcademiaSinicaNLPLab/sentiment_dataset/master/data/'
+
 STSBenchmark='http://ixa2.si.ehu.es/stswiki/images/4/48/Stsbenchmark.tar.gz'
 SNLI='https://nlp.stanford.edu/projects/snli/snli_1.0.zip'
 MULTINLI='https://www.nyu.edu/projects/bowman/multinli/multinli_0.9.zip'
-COCO='https://s3.amazonaws.com/senteval/coco_r101_feat'
-
-# MRPC is a special case (we use "cabextract" to extract the msi file on Linux, see below)
-MRPC='https://download.microsoft.com/download/D/4/6/D46FF87A-F6B9-4252-AA8B-3604ED519838/MSRParaphraseCorpus.msi'
 
 # STS 2012, 2013, 2014, 2015, 2016
 declare -A STS_tasks
@@ -51,25 +43,6 @@ STS_tasks=(["STS12"]="MSRpar MSRvid SMTeuroparl surprise.OnWN surprise.SMTnews" 
 STS_paths=(["STS12"]="http://ixa2.si.ehu.es/stswiki/images/4/40/STS2012-en-test.zip" ["STS13"]="http://ixa2.si.ehu.es/stswiki/images/2/2f/STS2013-en-test.zip" ["STS14"]="http://ixa2.si.ehu.es/stswiki/images/8/8c/STS2014-en-test.zip" ["STS15"]="http://ixa2.si.ehu.es/stswiki/images/d/da/STS2015-en-test.zip"
 ["STS16"]="http://ixa2.si.ehu.es/stswiki/images/9/98/STS2016-en-test.zip")
 
-STS_subdirs=(["STS12"]="test-gold" ["STS13"]="test-gs" ["STS14"]="sts-en-test-gs-2014" ["STS15"]="test_evaluation_task2a" ["STS16"]="sts2016-english-with-gs-v1.0")
-
-
-
-
-### Get Stanford Sentiment Treebank (SST) binary classification task
-# SST binary
-mkdir -p $data_path/SST/binary
-for split in train dev test
-do
-    curl -Lo $data_path/SST/binary/sentiment-$split $SSTbin/sentiment-$split
-done
-
-# SST fine-grained
-mkdir -p $data_path/SST/fine/
-for split in train dev test
-do
-  curl -Lo $data_path/SST/fine/sentiment-$split $SSTfine/stsa.fine.$split
-done
 
 ### STS datasets
 
@@ -127,79 +100,6 @@ done
 
 
 
-
-### download TREC
-mkdir $data_path/TREC
-
-for split in train_5500 TREC_10
-do
-    urlname=$TREC/$split.label
-    curl -Lo $data_path/TREC/$split.label $urlname
-    sed -i -e "s/\`//g" $data_path/TREC/$split.label
-    sed -i -e "s/'//g" $data_path/TREC/$split.label
-done
-
-
-
-
-### download SICK
-mkdir $data_path/SICK
-
-for split in train trial test_annotated
-do
-    urlname=$SICK/sick_$split.zip
-    curl -Lo $data_path/SICK/sick_$split.zip $urlname
-    unzip $data_path/SICK/sick_$split.zip -d $data_path/SICK/
-    rm $data_path/SICK/readme.txt
-    rm $data_path/SICK/sick_$split.zip
-done
-
-for split in train trial test_annotated
-do
-    fname=$data_path/SICK/SICK_$split.txt
-    cut -f1 $fname | sed '1d' > $data_path/SICK/tmp1
-    cut -f4,5 $fname | sed '1d' > $data_path/SICK/tmp45
-    cut -f2 $fname | sed '1d' | $MTOKENIZER -threads 8 -l en -no-escape > $data_path/SICK/tmp2
-    cut -f3 $fname | sed '1d' | $MTOKENIZER -threads 8 -l en -no-escape > $data_path/SICK/tmp3
-    head -n 1 $fname > $data_path/SICK/tmp0
-    paste $data_path/SICK/tmp1 $data_path/SICK/tmp2 $data_path/SICK/tmp3 $data_path/SICK/tmp45 >> $data_path/SICK/tmp0
-    mv $data_path/SICK/tmp0 $fname
-    rm $data_path/SICK/tmp*
-done
-
-
-
-
-
-### download MR CR SUBJ MPQA
-# Download and unzip file
-curl -Lo $data_path/data_classif.zip $BINCLASSIF
-unzip $data_path/data_classif.zip -d $data_path/data_bin_classif
-rm $data_path/data_classif.zip
-
-# MR
-mkdir $data_path/MR
-cat -v $data_path/data_bin_classif/data/rt10662/rt-polarity.pos | $PTBTOKENIZER > $data_path/MR/rt-polarity.pos
-cat -v $data_path/data_bin_classif/data/rt10662/rt-polarity.neg | $PTBTOKENIZER > $data_path/MR/rt-polarity.neg
-
-# CR
-mkdir $data_path/CR
-cat -v $data_path/data_bin_classif/data/customerr/custrev.pos | $PTBTOKENIZER > $data_path/CR/custrev.pos
-cat -v $data_path/data_bin_classif/data/customerr/custrev.neg | $PTBTOKENIZER > $data_path/CR/custrev.neg
-
-# SUBJ
-mkdir $data_path/SUBJ
-cat -v $data_path/data_bin_classif/data/subj/subj.subjective | $PTBTOKENIZER > $data_path/SUBJ/subj.subjective
-cat -v $data_path/data_bin_classif/data/subj/subj.objective | $PTBTOKENIZER > $data_path/SUBJ/subj.objective
-
-# MPQA
-mkdir $data_path/MPQA
-cat -v $data_path/data_bin_classif/data/mpqa/mpqa.pos | $PTBTOKENIZER > $data_path/MPQA/mpqa.pos
-cat -v $data_path/data_bin_classif/data/mpqa/mpqa.neg | $PTBTOKENIZER > $data_path/MPQA/mpqa.neg
-
-# CLEAN-UP
-rm -r $data_path/data_bin_classif
-
 ### download SNLI
 mkdir $data_path/SNLI
 curl -Lo $data_path/SNLI/snli_1.0.zip $SNLI
@@ -219,24 +119,3 @@ done
 rm -r $data_path/SNLI/snli_1.0
 
 
-
-
-### Get COCO captions and resnet-101 2048d-features
-# Captions : Copyright (c) 2015, COCO Consortium. All rights reserved.
-mkdir $data_path/COCO
-for split in train valid test
-do
-    curl -Lo $data_path/COCO/$split.pkl $COCO/$split.pkl
-done
-
-
-
-
-### download MRPC
-mkdir $data_path/MRPC
-curl -Lo $data_path/MRPC/msr_paraphrase_train.txt https://s3.amazonaws.com/senteval/senteval_data/msr_paraphrase_train.txt
-curl -Lo $data_path/MRPC/msr_paraphrase_test.txt https://s3.amazonaws.com/senteval/senteval_data/msr_paraphrase_test.txt
-
-
-# remove moses folder
-rm -rf mosesdecoder
