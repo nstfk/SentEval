@@ -66,7 +66,6 @@ if __name__ == "__main__":
     params_senteval['infersent'] = model.cuda()
 
     se = senteval.engine.SE(params_senteval, batcher, prepare)
-    transfer_tasks = ['STS12', 'SNLI', 
-                      'SICKEntailment', 'SICKRelatedness', 'STSBenchmark']
+    transfer_tasks = [ 'SNLI']
     results = se.eval(transfer_tasks)
     print(results)
