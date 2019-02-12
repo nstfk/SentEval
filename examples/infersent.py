@@ -22,9 +22,9 @@ from models import InferSent
 # Set PATHs
 PATH_SENTEVAL = '../'
 PATH_TO_DATA = '../data'
-PATH_TO_W2V = 'glove/glove.840B.300d.txt'  # or crawl-300d-2M.vec for V2
-MODEL_PATH = 'infersent1.pkl'
-V = 1 # version of InferSent
+PATH_TO_W2V = 'fasttext/crawl-300d-2M.vec'# 'glove/glove.840B.300d.txt'  # or crawl-300d-2M.vec for V2
+MODEL_PATH = 'infersent2.pkl'
+V = 2 # version of InferSent
 
 assert os.path.isfile(MODEL_PATH) and os.path.isfile(PATH_TO_W2V), \
     'Set MODEL and GloVe PATHs'
@@ -66,6 +66,7 @@ if __name__ == "__main__":
     params_senteval['infersent'] = model.cuda()
 
     se = senteval.engine.SE(params_senteval, batcher, prepare)
-    transfer_tasks = [ 'SNLI']
+    transfer_tasks = ['SNLI','MEDNLI']
     results = se.eval(transfer_tasks)
     print(results)
+    
