@@ -79,7 +79,7 @@ class SNLIEval(object):
             input1, input2, mylabels = self.data[key]
             enc_input = []
             n_labels = len(mylabels)
-            for ii in range(0, n_labels, params.batch_size):
+            for ii in range(0,n_labels, params.batch_size):
                 batch1 = input1[ii:ii + params.batch_size]
                 batch2 = input2[ii:ii + params.batch_size]
 
@@ -92,7 +92,12 @@ class SNLIEval(object):
                     logging.info("PROGRESS (encoding): %.2f%%" %
                                  (100 * ii / n_labels))
             self.X[key] = np.vstack(enc_input)
-            self.y[key] = [dico_label[y] for y in mylabels]
+            try:
+                self.y[key] = [dico_label[y] for y in mylabels]
+            except:
+                logging.info(' key error')
+                continue
+
 
         config = {'nclasses': 3, 'seed': self.seed,
                   'usepytorch': params.usepytorch,
