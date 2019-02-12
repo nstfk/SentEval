@@ -15,7 +15,7 @@ from __future__ import absolute_import, division, unicode_literals
 import numpy as np
 import copy
 from senteval import utils
-
+import logging
 import torch
 from torch import nn
 import torch.nn.functional as F
@@ -49,11 +49,12 @@ class PyTorchClassifier(object):
             devX, devy = X[devidx], y[devidx]
 
         device = torch.device('cpu') if self.cudaEfficient else torch.device('cuda')
-
+        logging.info("" + str(type(X)) + str(type(y)) + str(type(trainX)) + str(type(trainy)) + str(type(devX)) + str(
+            type(devy)))
         trainX = torch.from_numpy(trainX).to(device, dtype=torch.float32)
-        trainy = torch.from_numpy(trainy).to(device, dtype=torch.int64)
+        trainy = torch.from_numpy(np.array(trainy)).to(device, dtype=torch.int64)
         devX = torch.from_numpy(devX).to(device, dtype=torch.float32)
-        devy = torch.from_numpy(devy).to(device, dtype=torch.int64)
+        devy = torch.from_numpy(np.array(devy)).to(device, dtype=torch.int64)
 
         return trainX, trainy, devX, devy
 
@@ -90,6 +91,7 @@ class PyTorchClassifier(object):
             for i in range(0, len(X), self.batch_size):
                 # forward
                 idx = torch.from_numpy(permutation[i:i + self.batch_size]).long().to(X.device)
+
 
                 Xbatch = X[idx]
                 ybatch = y[idx]
@@ -158,6 +160,7 @@ class PyTorchClassifier(object):
 """
 MLP with Pytorch (nhid=0 --> Logistic Regression)
 """
+
 
 class MLP(PyTorchClassifier):
     def __init__(self, params, inputdim, nclasses, l2reg=0., batch_size=64,
