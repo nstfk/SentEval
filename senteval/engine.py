@@ -45,7 +45,7 @@ class SE(object):
         self.batcher = batcher
         self.prepare = prepare if prepare else lambda x, y: None
 
-        self.list_tasks = ['CR', 'MR', 'MPQA', 'SUBJ', 'SST2', 'SST5', 'TREC', 'MRPC',
+        self.list_tasks = ['CR', 'MR', 'MEDNLI','MPQA', 'SUBJ', 'SST2', 'SST5', 'TREC', 'MRPC',
                            'SICKRelatedness', 'SICKEntailment', 'STSBenchmark',
                            'SNLI', 'ImageCaptionRetrieval', 'STS12', 'STS13',
                            'STS14', 'STS15', 'STS16',
@@ -88,7 +88,7 @@ class SE(object):
         elif name == 'SNLI':
             self.evaluation = SNLIEval(tpath + '/downstream/SNLI', seed=self.params.seed)
         elif name == 'MEDNLI':
-            self.evaluation = SNLIEval(tpath + '/downstream/MEDNLI', seed=self.params.seed)
+            self.evaluation = SNLIEval(tpath + '/MEDNLI', seed=self.params.seed)
         elif name in ['STS12', 'STS13', 'STS14', 'STS15', 'STS16']:
             fpath = name + '-en-test'
             self.evaluation = eval(name + 'Eval')(tpath + '/downstream/STS/' + fpath, seed=self.params.seed)
