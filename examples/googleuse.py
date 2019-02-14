@@ -14,9 +14,16 @@ import tensorflow as tf
 import tensorflow_hub as hub
 tf.logging.set_verbosity(0)
 
+
+
+# Set up logger
+logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
+logging.info("GOOGLE USE MODEL (params: Path to Data & # of Hidden Layers[optional] )")
+logging.info("\n\n\nPATH_TO_DATA: " + str(sys.argv[1])+ "\n\n")
+
 # Set PATHs
 PATH_TO_SENTEVAL = '../'
-PATH_TO_DATA = '../data'
+PATH_TO_DATA = sys.argv[1]  # '../data'
 
 # import SentEval
 sys.path.insert(0, PATH_TO_SENTEVAL)
@@ -43,25 +50,25 @@ def make_embed_fn(module):
     session = tf.train.MonitoredSession()
   return lambda x: session.run(embeddings, {sentences: x})
 
+# define senteval params
+params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 10}
+
+if (len(sys.argv)>3):
+    nhid = int(sys.argv[3])
+else:
+    nhid=0
+
+#params_senteval['classifier'] = {'nhid':nhid , 'optim': 'rmsprop', 'batch_size': 128,'tenacity': 3, 'epoch_size': 2}
+params_senteval['classifier'] ={'nhid': nhid, 'optim': 'adam','batch_size': 64, 'tenacity': 5,'epoch_size': 4}
+
 # Start TF session and load Google Universal Sentence Encoder
 encoder = make_embed_fn("https://tfhub.dev/google/universal-sentence-encoder-large/2")
 
-# Set params for SentEval
-params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 5}
-params_senteval['classifier'] = {'nhid': 0, 'optim': 'rmsprop', 'batch_size': 128,
-                                 'tenacity': 3, 'epoch_size': 2}
-params_senteval['google_use'] = encoder
 
-# Set up logger
-logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
+params_senteval['google_use'] = encoder
 
 if __name__ == "__main__":
     se = senteval.engine.SE(params_senteval, batcher, prepare)
-    transfer_tasks = ['STS12', 'STS13', 'STS14', 'STS15', 'STS16',
-                      'MR', 'CR', 'MPQA', 'SUBJ', 'SST2', 'SST5', 'TREC', 'MRPC',
-                      'SICKEntailment', 'SICKRelatedness', 'STSBenchmark',
-                      'Length', 'WordContent', 'Depth', 'TopConstituents',
-                      'BigramShift', 'Tense', 'SubjNumber', 'ObjNumber',
-                      'OddManOut', 'CoordinationInversion']
+    transfer_tasks = ['MEDNLI']
     results = se.eval(transfer_tasks)
     print(results)
