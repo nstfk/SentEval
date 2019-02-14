@@ -89,8 +89,8 @@ class SNLIEval(object):
                     enc_input.append(np.hstack((enc1, enc2, enc1 * enc2,
                                                 np.abs(enc1 - enc2))))
                 if (ii*params.batch_size) % (200*params.batch_size) == 0:
-                    logging.info("PROGRESS (encoding): %.2f%%" %
-                                 (100 * ii / n_labels))
+                    logging.info("PROGRESS (encoding): %.2f%% - " %
+                                 (100 * ii / n_labels), ii)
             self.X[key] = np.vstack(enc_input)
             try:
                 self.y[key] = [dico_label[y] for y in mylabels]
