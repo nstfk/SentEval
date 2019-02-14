@@ -89,7 +89,7 @@ class SNLIEval(object):
                     enc_input.append(np.hstack((enc1, enc2, enc1 * enc2,
                                                 np.abs(enc1 - enc2))))
                 if (ii*params.batch_size) % (200*params.batch_size) == 0:
-                    logging.info("PROGRESS (encoding): %.2f%% - " %
+                    logging.info("PROGRESS (encoding): %.2f%% - %d " %
                                  (100 * ii / n_labels), ii)
             self.X[key] = np.vstack(enc_input)
             try:
