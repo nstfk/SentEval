@@ -69,6 +69,6 @@ params_senteval['google_use'] = encoder
 
 if __name__ == "__main__":
     se = senteval.engine.SE(params_senteval, batcher, prepare)
-    transfer_tasks = ['MEDNLI']
+    transfer_tasks = ['MEDNLI','MEDSTS']
     results = se.eval(transfer_tasks)
     print(results)
