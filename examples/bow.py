@@ -19,6 +19,28 @@ PATH_TO_DATA = '../data'
 # PATH_TO_VEC = 'glove/glove.840B.300d.txt'
 PATH_TO_VEC = 'fasttext/crawl-300d-2M.vec'
 
+# Set up logger
+
+logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
+logging.info("ELMO MODEL (params: Path to Data & Num of Hidden Layers[optional} ) ")
+logging.info("PATH_TO_DATA: " + str(sys.argv[1]) +"\nPATH_TO_VEC: "+ str(sys.argv[2]))
+
+
+# Set PATHs
+PATH_SENTEVAL = '../'
+PATH_TO_DATA = sys.argv[1]#'../data'
+PATH_TO_VEC =  sys.argv[2]#'fasttext/crawl-300d-2M.vec'# 'glove/glove.840B.300d.txt'  # or crawl-300d-2M.vec for V2
+# define senteval params
+params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 10}
+
+if (len(sys.argv)>5):
+    nhid = int(sys.argv[5])
+else:
+    nhid=0
+
+#params_senteval['classifier'] = {'nhid':nhid , 'optim': 'rmsprop', 'batch_size': 128,'tenacity': 3, 'epoch_size': 2}
+params_senteval['classifier'] ={'nhid': nhid, 'optim': 'adam','batch_size': 64, 'tenacity': 5,'epoch_size': 4}
+
 # import SentEval
 sys.path.insert(0, PATH_TO_SENTEVAL)
 import senteval
@@ -92,10 +114,7 @@ def batcher(params, batch):
     return embeddings
 
 
-# Set params for SentEval
-params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 5}
-params_senteval['classifier'] = {'nhid': 0, 'optim': 'rmsprop', 'batch_size': 128,
-                                 'tenacity': 3, 'epoch_size': 2}
+
 
 # Set up logger
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
