@@ -22,8 +22,8 @@ PATH_TO_VEC = 'fasttext/crawl-300d-2M.vec'
 # Set up logger
 
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
-logging.info("ELMO MODEL (params: Path to Data & Num of Hidden Layers[optional} ) ")
-logging.info("PATH_TO_DATA: " + str(sys.argv[1]) +"\nPATH_TO_VEC: "+ str(sys.argv[2]))
+logging.info("\nBOW MODEL (params: Path to Data & Num of Hidden Layers[optional} ) ")
+logging.info("\nPATH_TO_DATA: " + str(sys.argv[1]) +"\nPATH_TO_VEC: "+ str(sys.argv[2]))
 
 
 # Set PATHs
