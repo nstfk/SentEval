@@ -102,8 +102,6 @@ logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
 
 if __name__ == "__main__":
     se = senteval.engine.SE(params_senteval, batcher, prepare)
-    transfer_tasks = ['STS12', 'STS13', 'STS14', 'STS15', 'STS16',
-                      'SICKEntailment', 'SICKRelatedness', 'STSBenchmark',
-                      'SNLI']
+    transfer_tasks = ['MEDNLI']
     results = se.eval(transfer_tasks)
     print(results)
