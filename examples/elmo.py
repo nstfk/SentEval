@@ -45,8 +45,8 @@ def batcher(params, batch):
 def make_embed_fn(module):
   with tf.Graph().as_default():
     sentences = tf.placeholder(tf.string)
-    elmo = hub.Module(module)
-    embeddings = elmo(sentences,signature='default',as_dict=True)["elmo"]
+    elmo = hub.Module(module,trainable=True)
+    embeddings = elmo(sentences,signature='default',as_dict=True)["default"]
     session = tf.train.MonitoredSession()
   return lambda x: session.run(embeddings, {sentences: x})
 
