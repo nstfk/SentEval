@@ -127,7 +127,7 @@ class STS14Eval(STSEval):
         logging.debug('***** Transfer task : STS14 *****\n\n')
         self.seed = seed
         self.datasets = ['deft-forum', 'deft-news', 'headlines',
-                         'images', 'OnWN', 'tweet-news']
+                         'images', 'OnWN', 'tweet-news','clinical-STS']
         self.loadFile(taskpath)
 
 
