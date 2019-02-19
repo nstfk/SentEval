@@ -90,9 +90,9 @@ class SE(object):
             fpath ='sts-en-test-gs-2014'
             self.evaluation = eval(name + 'Eval')(tpath + '/STS14' , seed=self.params.seed)
         elif name in ['ClinicalSTS']:
-            self.evaluation = eval(name + 'Eval')(tpath + '/ClinicalSTS, seed=self.params.seed)
+            self.evaluation = eval(name + 'Eval')(tpath + '/ClinicalSTS', seed=self.params.seed)
         elif name in ['BIOSSES']:
-            self.evaluation = eval(name + 'Eval')(tpath + '/ClinicalSTS, seed=self.params.seed)                                   
+            self.evaluation = eval(name + 'Eval')(tpath + '/BIOSSES', seed=self.params.seed)                                   
                            
         self.params.current_task = name
         self.evaluation.do_prepare(self.params, self.prepare)
