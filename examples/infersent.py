@@ -85,4 +85,5 @@ if __name__ == "__main__":
     results = se.eval(transfer_tasks)
     print(results)
     returnFn(results)
+    sys.exit(results) 
     
