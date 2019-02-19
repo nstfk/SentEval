@@ -18,7 +18,7 @@ from senteval.snli import SNLIEval
 from senteval.trec import TRECEval
 from senteval.sick import SICKRelatednessEval, SICKEntailmentEval
 from senteval.mrpc import MRPCEval
-from senteval.sts import STS12Eval, STS13Eval, STS14Eval, STS15Eval, STS16Eval, STSBenchmarkEval
+from senteval.sts import STS14Eval, STSBenchmarkEval,ClinicalSTSEval,BIOSSESEval
 from senteval.sst import SSTEval
 from senteval.rank import ImageCaptionRetrievalEval
 from senteval.probing import *
