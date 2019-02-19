@@ -45,7 +45,7 @@ class SE(object):
         self.batcher = batcher
         self.prepare = prepare if prepare else lambda x, y: None
 
-        self.list_tasks = ['CR', 'MR', 'MEDNLI','MPQA', 'SUBJ', 'SST2', 'SST5', 'TREC', 'MRPC',
+        self.list_tasks = ['CR', 'MR', 'MEDNLI','MEDSTS','MPQA', 'SUBJ', 'SST2', 'SST5', 'TREC', 'MRPC',
                            'SICKRelatedness', 'SICKEntailment', 'STSBenchmark','ClinicalSTS',
                            'SNLI', 'ImageCaptionRetrieval', 'STS12', 'STS13',
                            'STS14', 'STS15', 'STS16',
@@ -92,32 +92,11 @@ class SE(object):
         elif name == 'MEDNLI':
             self.evaluation = SNLIEval(tpath + '/MEDNLI', seed=self.params.seed)
         elif name in ['STS12', 'STS13', 'STS14', 'STS15', 'STS16']:
-            fpath = name + '-en-test'
+            fpath = name + '-en-test-gs-2014'
             self.evaluation = eval(name + 'Eval')(tpath + '/downstream/STS/' + fpath, seed=self.params.seed)
         elif name == 'ImageCaptionRetrieval':
             self.evaluation = ImageCaptionRetrievalEval(tpath + '/downstream/COCO', seed=self.params.seed)
 
-        # Probing Tasks
-        elif name == 'Length':
-                self.evaluation = LengthEval(tpath + '/probing', seed=self.params.seed)
-        elif name == 'WordContent':
-                self.evaluation = WordContentEval(tpath + '/probing', seed=self.params.seed)
-        elif name == 'Depth':
-                self.evaluation = DepthEval(tpath + '/probing', seed=self.params.seed)
-        elif name == 'TopConstituents':
-                self.evaluation = TopConstituentsEval(tpath + '/probing', seed=self.params.seed)
-        elif name == 'BigramShift':
-                self.evaluation = BigramShiftEval(tpath + '/probing', seed=self.params.seed)
-        elif name == 'Tense':
-                self.evaluation = TenseEval(tpath + '/probing', seed=self.params.seed)
-        elif name == 'SubjNumber':
-                self.evaluation = SubjNumberEval(tpath + '/probing', seed=self.params.seed)
-        elif name == 'ObjNumber':
-                self.evaluation = ObjNumberEval(tpath + '/probing', seed=self.params.seed)
-        elif name == 'OddManOut':
-                self.evaluation = OddManOutEval(tpath + '/probing', seed=self.params.seed)
-        elif name == 'CoordinationInversion':
-                self.evaluation = CoordinationInversionEval(tpath + '/probing', seed=self.params.seed)
 
         self.params.current_task = name
         self.evaluation.do_prepare(self.params, self.prepare)
