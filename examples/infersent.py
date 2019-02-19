@@ -83,6 +83,6 @@ if __name__ == "__main__":
     transfer_tasks = ['MEDNLI','ClinicalSTS','BIOSSES','ClinicalSTS2']
     results = se.eval(transfer_tasks)
     print(results)
-    with open('data.txt', 'w') as f:
+    with open('/content/data.txt', 'a') as f:
         f.write(results)
     
