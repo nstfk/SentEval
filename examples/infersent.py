@@ -82,8 +82,4 @@ if __name__ == "__main__":
     transfer_tasks = ['MEDNLI','ClinicalSTS','BIOSSES','ClinicalSTS2']
     results = se.eval(transfer_tasks)
     print(results)
-    with open("results.txt", "a") as f:
-        f.write(results)
-        f.flush()
-        os.fsync(f.fileno())
     
