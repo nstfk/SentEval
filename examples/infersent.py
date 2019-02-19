@@ -84,4 +84,6 @@ if __name__ == "__main__":
     print(results)
     with open("results.txt", "a") as f:
         f.write(results)
+        f.flush()
+        os.fsync(f.fileno())
     
