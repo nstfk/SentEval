@@ -82,3 +82,4 @@ if __name__ == "__main__":
     transfer_tasks = ['MEDNLI','ClinicalSTS','BIOSSES','ClinicalSTS2']
     results = se.eval(transfer_tasks)
     print(results)
+    return results
