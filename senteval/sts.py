@@ -132,14 +132,14 @@ class STS14Eval(STSEval):
 
 class ClinicalSTSEval(STSEval):
     def __init__(self, taskpath, seed=1111):
-        logging.debug('***** Transfer task : STS14 *****\n\n')
+        logging.debug('***** Transfer task : ClinicalSTS *****\n\n')
         self.seed = seed
         self.datasets = ['clinical-STS']
         self.loadFile(taskpath)
         
 class BIOSSESEval(STSEval):
     def __init__(self, taskpath, seed=1111):
-        logging.debug('***** Transfer task : STS14 *****\n\n')
+        logging.debug('***** Transfer task : BIOSSES *****\n\n')
         self.seed = seed
         self.datasets = ['BIOSSES']
         self.loadFile(taskpath)
