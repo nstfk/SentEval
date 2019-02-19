@@ -16,6 +16,7 @@ import os
 import torch
 import logging
 import sys
+import json
 
 print(sys.argv[1:])
 # get models.py from InferSent repo
@@ -82,4 +83,6 @@ if __name__ == "__main__":
     transfer_tasks = ['MEDNLI','ClinicalSTS','BIOSSES','ClinicalSTS2']
     results = se.eval(transfer_tasks)
     print(results)
+    with open('data.txt', 'w') as f:
+        json.dump(results, f, ensure_ascii=False)
     
