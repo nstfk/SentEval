@@ -62,7 +62,7 @@ else:
 params_senteval['classifier'] ={'nhid': nhid, 'optim': 'adam','batch_size': 64, 'tenacity': 5,'epoch_size': 4}
 
 # Start TF session and load Google Universal Sentence Encoder
-encoder = make_embed_fn("https://tfhub.dev/google/universal-sentence-encoder-large/2")
+encoder = make_embed_fn("https://tfhub.dev/google/universal-sentence-encoder-large/3")
 
 
 params_senteval['google_use'] = encoder
