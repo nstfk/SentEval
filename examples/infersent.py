@@ -67,7 +67,9 @@ def batcher(params, batch):
 """
 Evaluation of trained model on Transfer Tasks (SentEval)
 """
-
+def returnFn(results):
+        return results
+    
 if __name__ == "__main__":
     # Load InferSent model
     params_model = {'bsize': 64, 'word_emb_dim': 300, 'enc_lstm_dim': 2048,
@@ -82,4 +84,5 @@ if __name__ == "__main__":
     transfer_tasks = ['MEDNLI','ClinicalSTS','BIOSSES','ClinicalSTS2']
     results = se.eval(transfer_tasks)
     print(results)
-    return results
+    returnFn(results)
+    
