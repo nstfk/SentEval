@@ -84,5 +84,5 @@ if __name__ == "__main__":
     results = se.eval(transfer_tasks)
     print(results)
     with open('data.txt', 'w') as f:
-        json.dump(results, f, ensure_ascii=False)
+        f.write(results)
     
