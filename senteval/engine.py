@@ -46,7 +46,7 @@ class SE(object):
         self.prepare = prepare if prepare else lambda x, y: None
 
         self.list_tasks = ['CR', 'MR', 'MEDNLI','MPQA', 'SUBJ', 'SST2', 'SST5', 'TREC', 'MRPC',
-                           'SICKRelatedness', 'SICKEntailment', 'STSBenchmark',
+                           'SICKRelatedness', 'SICKEntailment', 'STSBenchmark','ClinicalSTS',
                            'SNLI', 'ImageCaptionRetrieval', 'STS12', 'STS13',
                            'STS14', 'STS15', 'STS16',
                            'Length', 'WordContent', 'Depth', 'TopConstituents',
@@ -83,6 +83,8 @@ class SE(object):
             self.evaluation = SICKRelatednessEval(tpath + '/downstream/SICK', seed=self.params.seed)
         elif name == 'STSBenchmark':
             self.evaluation = STSBenchmarkEval(tpath + '/downstream/STS/STSBenchmark', seed=self.params.seed)
+        elif name == 'ClinicalSTS':
+            self.evaluation = STSBenchmarkEval(tpath + '/ClinicalSTS', seed=self.params.seed)
         elif name == 'SICKEntailment':
             self.evaluation = SICKEntailmentEval(tpath + '/downstream/SICK', seed=self.params.seed)
         elif name == 'SNLI':
