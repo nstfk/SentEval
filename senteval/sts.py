@@ -130,23 +130,40 @@ class STS14Eval(STSEval):
                          'images', 'OnWN', 'tweet-news','clinical-STS','BIOSSES']
         self.loadFile(taskpath)
 
-
-class STS15Eval(STSEval):
+class ClinicalSTSEval(STSEval):
     def __init__(self, taskpath, seed=1111):
-        logging.debug('***** Transfer task : STS15 *****\n\n')
+        logging.debug('***** Transfer task : STS14 *****\n\n')
         self.seed = seed
-        self.datasets = ['answers-forums', 'answers-students',
-                         'belief', 'headlines', 'images']
+        self.datasets = ['clinical-STS']
+        self.loadFile(taskpath)
+        
+class BIOSSESEval(STSEval):
+    def __init__(self, taskpath, seed=1111):
+        logging.debug('***** Transfer task : STS14 *****\n\n')
+        self.seed = seed
+        self.datasets = ['BIOSSES']
         self.loadFile(taskpath)
 
-
-class STS16Eval(STSEval):
-    def __init__(self, taskpath, seed=1111):
-        logging.debug('***** Transfer task : STS16 *****\n\n')
+class CLINICALSTS(SICKRelatednessEval):
+    def __init__(self, task_path, seed=1111):
+        logging.debug('\n\n***** Transfer task : STSBenchmark*****\n\n')
         self.seed = seed
-        self.datasets = ['answer-answer', 'headlines', 'plagiarism',
-                         'postediting', 'question-question']
-        self.loadFile(taskpath)
+        train = self.loadFile(os.path.join(task_path, 'sts-train.csv'))
+        dev = self.loadFile(os.path.join(task_path, 'sts-dev.csv'))
+        test = self.loadFile(os.path.join(task_path, 'sts-test.csv'))
+        self.sick_data = {'train': train, 'dev': dev, 'test': test}
+
+    def loadFile(self, fpath):
+        sick_data = {'X_A': [], 'X_B': [], 'y': []}
+        with io.open(fpath, 'r', encoding='utf-8') as f:
+            for line in f:
+                text = line.strip().split('\t')
+                sick_data['X_A'].append(text[5].split())
+                sick_data['X_B'].append(text[6].split())
+                sick_data['y'].append(text[4])
+
+        sick_data['y'] = [float(s) for s in sick_data['y']]
+        return sick_data
 
 
 class STSBenchmarkEval(SICKRelatednessEval):
