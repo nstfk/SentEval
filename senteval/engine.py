@@ -45,13 +45,8 @@ class SE(object):
         self.batcher = batcher
         self.prepare = prepare if prepare else lambda x, y: None
 
-        self.list_tasks = ['CR', 'MR', 'MEDNLI','MEDSTS','MPQA', 'SUBJ', 'SST2', 'SST5', 'TREC', 'MRPC',
-                           'SICKRelatedness', 'SICKEntailment', 'STSBenchmark','ClinicalSTS','BIOSSES',
-                           'SNLI', 'ImageCaptionRetrieval', 'STS12', 'STS13',
-                           'STS14', 'STS15', 'STS16',
-                           'Length', 'WordContent', 'Depth', 'TopConstituents',
-                           'BigramShift', 'Tense', 'SubjNumber', 'ObjNumber',
-                           'OddManOut', 'CoordinationInversion']
+        self.list_tasks = ['MEDNLI', 'STSBenchmark','ClinicalSTS','ClinicalSTS2','BIOSSES']
+                       
 
     def eval(self, name):
         # evaluate on evaluation [name], either takes string or list of strings
@@ -83,7 +78,7 @@ class SE(object):
             self.evaluation = SICKRelatednessEval(tpath + '/downstream/SICK', seed=self.params.seed)
         elif name == 'STSBenchmark':
             self.evaluation = STSBenchmarkEval(tpath + '/downstream/STS/STSBenchmark', seed=self.params.seed)
-        elif name == 'ClinicalSTS':
+        elif name == 'ClinicalSTS2':
             self.evaluation = STSBenchmarkEval(tpath + '/ClinicalSTS', seed=self.params.seed)
         elif name == 'SICKEntailment':
             self.evaluation = SICKEntailmentEval(tpath + '/downstream/SICK', seed=self.params.seed)
