@@ -67,8 +67,6 @@ def batcher(params, batch):
 """
 Evaluation of trained model on Transfer Tasks (SentEval)
 """
-def returnFn(results):
-        return results
     
 if __name__ == "__main__":
     # Load InferSent model
@@ -84,6 +82,6 @@ if __name__ == "__main__":
     transfer_tasks = ['MEDNLI','ClinicalSTS','BIOSSES','ClinicalSTS2']
     results = se.eval(transfer_tasks)
     print(results)
-    returnFn(results)
-    sys.exit(results) 
+    with open("results.txt", "a") as f:
+        f.write(results)
     
