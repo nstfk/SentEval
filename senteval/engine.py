@@ -46,7 +46,7 @@ class SE(object):
         self.prepare = prepare if prepare else lambda x, y: None
 
         self.list_tasks = ['CR', 'MR', 'MEDNLI','MEDSTS','MPQA', 'SUBJ', 'SST2', 'SST5', 'TREC', 'MRPC',
-                           'SICKRelatedness', 'SICKEntailment', 'STSBenchmark','ClinicalSTS',
+                           'SICKRelatedness', 'SICKEntailment', 'STSBenchmark','ClinicalSTS','BIOSSES',
                            'SNLI', 'ImageCaptionRetrieval', 'STS12', 'STS13',
                            'STS14', 'STS15', 'STS16',
                            'Length', 'WordContent', 'Depth', 'TopConstituents',
@@ -92,10 +92,8 @@ class SE(object):
         elif name == 'MEDNLI':
             self.evaluation = SNLIEval(tpath + '/MEDNLI', seed=self.params.seed)
         elif name in ['STS12', 'STS13', 'STS14', 'STS15', 'STS16']:
-            fpath = name + '-en-test-gs-2014'
+            fpath ='sts-en-test-gs-2014'
             self.evaluation = eval(name + 'Eval')(tpath + '/downstream/STS/' + fpath, seed=self.params.seed)
-        elif name == 'ImageCaptionRetrieval':
-            self.evaluation = ImageCaptionRetrievalEval(tpath + '/downstream/COCO', seed=self.params.seed)
 
 
         self.params.current_task = name
