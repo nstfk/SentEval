@@ -79,18 +79,21 @@ class SE(object):
         elif name == 'STSBenchmark':
             self.evaluation = STSBenchmarkEval(tpath + '/downstream/STS/STSBenchmark', seed=self.params.seed)
         elif name == 'ClinicalSTS2':
-            self.evaluation = STSBenchmarkEval(tpath + '/ClinicalSTS', seed=self.params.seed)
+            self.evaluation = STSBenchmarkEval(tpath + '/ClinicalSTS2', seed=self.params.seed)
         elif name == 'SICKEntailment':
             self.evaluation = SICKEntailmentEval(tpath + '/downstream/SICK', seed=self.params.seed)
         elif name == 'SNLI':
             self.evaluation = SNLIEval(tpath + '/downstream/SNLI', seed=self.params.seed)
         elif name == 'MEDNLI':
             self.evaluation = SNLIEval(tpath + '/MEDNLI', seed=self.params.seed)
-        elif name in ['STS14','ClinicalSTS','BIOSSES']:
+        elif name in ['STS14']:
             fpath ='sts-en-test-gs-2014'
-            self.evaluation = eval(name + 'Eval')(tpath + '/downstream/STS/' + fpath, seed=self.params.seed)
-
-
+            self.evaluation = eval(name + 'Eval')(tpath + '/STS14' , seed=self.params.seed)
+        elif name in ['ClinicalSTS']:
+            self.evaluation = eval(name + 'Eval')(tpath + '/ClinicalSTS, seed=self.params.seed)
+        elif name in ['BIOSSES']:
+            self.evaluation = eval(name + 'Eval')(tpath + '/ClinicalSTS, seed=self.params.seed)                                   
+                           
         self.params.current_task = name
         self.evaluation.do_prepare(self.params, self.prepare)
 
