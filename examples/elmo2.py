@@ -14,7 +14,7 @@ import random
 
 # Set up logger
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
-logging.info("ELMO MODEL [ALLENNLP] (params: Path to Data , 'MEAN'/'SUM', options_file[optional], weight file[optional] , Num of Hidden Layers[optional] ) ")
+logging.info("ELMO MODEL [ALLENNLP] (params: Path to Data , options_file[optional], weight file[optional] , Num of Hidden Layers[optional] ) ")
 logging.info("\n\n\nPATH_TO_DATA: " + str(sys.argv[1])+ "\n\n")
 
 # Set PATHs
@@ -39,13 +39,13 @@ params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': False, 'kfold': 10}
 
 
 if (len(sys.argv)==4):
-	elmo_encoder = ElmoEmbedder(sys.argv[3],sys.argv[4],cuda_device=0)
+	elmo_encoder = ElmoEmbedder(sys.argv[2],sys.argv[3],cuda_device=0)
 else:
 	elmo_encoder = ElmoEmbedder(cuda_device=0)
 params_senteval['elmo'] = elmo_encoder
 
-if (len(sys.argv)==6):
-    nhid = int(sys.argv[5])
+if (len(sys.argv)==5):
+    nhid = int(sys.argv[4])
 else:
     nhid=0
 params_senteval['classifier'] ={'nhid': nhid, 'optim': 'adam','batch_size': 64, 'tenacity': 5,'epoch_size': 4}
@@ -97,7 +97,7 @@ def batcher(params, batch):
         #concatenate the 3 layers returned from ELMo #3072
         comb_elmo_embedding = np.concatenate(elmo_embedding, axis=1)
         
-        e_elmo=s_embedding(comb_elmo_embedding, sys.argv[2])   
+        e_elmo=np.mean(comb_elmo_embedding, axis=0)   
         embeddings.append(e_elmo)
         
     embeddings = np.vstack(embeddings)
