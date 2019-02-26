@@ -44,7 +44,7 @@ else:
 	elmo_encoder = ElmoEmbedder(cuda_device=0)
 params_senteval['elmo'] = elmo_encoder
 
-if (len(sys.argv)=5):
+if (len(sys.argv)==5):
     nhid = int(sys.argv[5])
 else:
     nhid=0
