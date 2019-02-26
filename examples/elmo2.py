@@ -14,7 +14,7 @@ import random
 
 # Set up logger
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
-logging.info("ELMO MODEL [ALLENNLP] (params: Path to Data , options_file[optional], weight file[optional] , Num of Hidden Layers[optional] ) ")
+logging.info("ELMO MODEL [ALLENNLP] (params: Path to Data , 'MEAN'/'SUM', options_file[optional], weight file[optional] , Num of Hidden Layers[optional] ) ")
 logging.info("\n\n\nPATH_TO_DATA: " + str(sys.argv[1])+ "\n\n")
 
 # Set PATHs
@@ -39,12 +39,12 @@ params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': False, 'kfold': 10}
 
 
 if (len(sys.argv)==4):
-	elmo_encoder = ElmoEmbedder(sys.argv[2],sys.argv[3],cuda_device=0)
+	elmo_encoder = ElmoEmbedder(sys.argv[3],sys.argv[4],cuda_device=0)
 else:
 	elmo_encoder = ElmoEmbedder(cuda_device=0)
 params_senteval['elmo'] = elmo_encoder
 
-if (len(sys.argv)==5):
+if (len(sys.argv)==6):
     nhid = int(sys.argv[5])
 else:
     nhid=0
@@ -53,7 +53,7 @@ params_senteval['classifier'] ={'nhid': nhid, 'optim': 'adam','batch_size': 64, 
 
 
 
-def sentence_embedding(word_embeds, rule='MEAN'):
+def s_embedding(word_embeds, rule='MEAN'):
     '''
     defines the type of sentence embedding
     @param word_embeds: word embeddings - np array of arrays
@@ -79,10 +79,7 @@ def prepare(params, samples):
 
 def batcher(params, batch):
     """
-    In this example we use the average of word embeddings as a sentence representation.
-    Each batch consists of one vector for sentence.
-    Here you can process each sentence of the batch, 
-    or a complete batch (you may need masking for that).
+    
     
     """
     # if a sentence is empty dot is set to be the only token
@@ -91,23 +88,17 @@ def batcher(params, batch):
     embeddings = []
     #print(batch)
 
-    
-        # average of word embeddings for sentence representation
-        # [embedding dimansionality]
-        #sentvec = np.mean(sentvec, 0)
-        #embeddings.append(sentvec)
-    # [batch size, embedding dimensionality]
-   
+       
     #for elmo_embedding in params.elmo.embed_sentences(batch):  
-    for elmo_embedding in params_senteval['elmo'].embed_sentences(batch):  
+    for elmo_embedding in params_senteval['elmo'].embed_batch(batch):  
         # Average the 3 layers returned from ELMo #1024
         avg_elmo_embedding = np.average(elmo_embedding, axis=0)
         
         #concatenate the 3 layers returned from ELMo #3072
         comb_elmo_embedding = np.concatenate(elmo_embedding, axis=1)
         
-        mowe_elmo=np.mean(comb_elmo_embedding, axis=0)   
-        embeddings.append(mowe_elmo)
+        e_elmo=s_embedding(comb_elmo_embedding, sys.argv[2])   
+        embeddings.append(e_elmo)
         
     embeddings = np.vstack(embeddings)
     return embeddings
