@@ -23,7 +23,7 @@ PATH_TO_DATA = sys.argv[1]  # '../data'
 
 
 # import SentEval
-sys.path.insert(0, PATH_TO_SENTEVAL)
+sys.path.insert(0, PATH_SENTEVAL)
 import senteval
 
 # Set params for SentEval
