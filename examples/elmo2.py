@@ -18,10 +18,8 @@ logging.info("ELMO MODEL [ALLENNLP] (params: Path to Data , options_file[optiona
 logging.info("\n\n\nPATH_TO_DATA: " + str(sys.argv[1])+ "\n\n")
 
 # Set PATHs
-# path to senteval
-PATH_TO_SENTEVAL = '../SentEval'
-# path to the NLP datasets 
-PATH_TO_DATA = '/content/gdrive/My Drive/MedSentEval/data'
+PATH_SENTEVAL = '../'
+PATH_TO_DATA = sys.argv[1]  # '../data'
 
 
 # import SentEval
@@ -40,7 +38,7 @@ params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': False, 'kfold': 10}
 #weight_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/contributed/pubmed/elmo_2x4096_512_2048cnn_2xhighway_weights_PubMed_only.hdf5'
 
 
-if argv[2] & argv[3]:
+if sys.argv[2] & sys.argv[3]:
 	elmo_encoder = ElmoEmbedder(options_file,weight_file,cuda_device=0)
 else:
 	elmo_encoder = ElmoEmbedder(cuda_device=0)
