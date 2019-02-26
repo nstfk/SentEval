@@ -38,13 +38,13 @@ params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': False, 'kfold': 10}
 #weight_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/contributed/pubmed/elmo_2x4096_512_2048cnn_2xhighway_weights_PubMed_only.hdf5'
 
 
-if sys.argv[2] & sys.argv[3]:
-	elmo_encoder = ElmoEmbedder(options_file,weight_file,cuda_device=0)
+if (len(sys.argv)==4)
+	elmo_encoder = ElmoEmbedder(sys.argv[2],sys.argv[3],cuda_device=0)
 else:
 	elmo_encoder = ElmoEmbedder(cuda_device=0)
 params_senteval['elmo'] = elmo_encoder
 
-if (len(sys.argv)>5):
+if (len(sys.argv)=5):
     nhid = int(sys.argv[5])
 else:
     nhid=0
