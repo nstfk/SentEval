@@ -90,15 +90,15 @@ def batcher(params, batch):
 
        
     #for elmo_embedding in params.elmo.embed_sentences(batch):  
-    for elmo_embedding in params_senteval['elmo'].embed_batch(batch):  
+    for elmo_embedding in params_senteval['elmo'].embed_sentences(batch):  
         # Average the 3 layers returned from ELMo #1024
         avg_elmo_embedding = np.average(elmo_embedding, axis=0)
         
         #concatenate the 3 layers returned from ELMo #3072
         comb_elmo_embedding = np.concatenate(elmo_embedding, axis=1)
         
-        e_elmo=np.mean(comb_elmo_embedding, axis=0)   
-        embeddings.append(e_elmo)
+        mowe_elmo=np.mean(comb_elmo_embedding, axis=0)   
+        embeddings.append(mowe_elmo)
         
     embeddings = np.vstack(embeddings)
     return embeddings
