@@ -26,6 +26,7 @@ PATH_TO_DATA = '/content/gdrive/My Drive/MedSentEval/data'
 
 # import SentEval
 sys.path.insert(0, PATH_TO_SENTEVAL)
+import senteval
 
 # Set params for SentEval
 # we use logistic regression (usepytorch: Fasle) and kfold 10
@@ -39,18 +40,20 @@ params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': False, 'kfold': 10}
 #weight_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/contributed/pubmed/elmo_2x4096_512_2048cnn_2xhighway_weights_PubMed_only.hdf5'
 
 
+if argv[2] & argv[3]:
+	elmo_encoder = ElmoEmbedder(options_file,weight_file,cuda_device=0)
+else:
+	elmo_encoder = ElmoEmbedder(cuda_device=0)
+params_senteval['elmo'] = elmo_encoder
+
 if (len(sys.argv)>5):
     nhid = int(sys.argv[5])
 else:
     nhid=0
 params_senteval['classifier'] ={'nhid': nhid, 'optim': 'adam','batch_size': 64, 'tenacity': 5,'epoch_size': 4}
-params_senteval['elmo'] = elmo_encoder
 
-if argv[2] & argv[3]:
-	elmo_encoder = ElmoEmbedder(options_file,weight_file,cuda_device=0)
-else:
-	elmo_encoder = ElmoEmbedder(cuda_device=0)
-import senteval
+
+
 
 def sentence_embedding(word_embeds, rule='MEAN'):
     '''
