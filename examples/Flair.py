@@ -15,6 +15,7 @@ from flair.embeddings import DocumentPoolEmbeddings
 from flair.embeddings import WordEmbeddings
 from flair.embeddings import WordEmbeddings
 from flair.embeddings import ELMoEmbeddings
+from flair.embeddings import BertEmbeddings
 import argparse
 
 
