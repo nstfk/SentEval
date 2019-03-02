@@ -7,11 +7,14 @@ import sklearn
 import torch
 import keras
 import os
-from allennlp.commands.elmo import ElmoEmbedder
+#from allennlp.commands.elmo import ElmoEmbedder
 import random
 from flair.data import Sentence
 from flair.embeddings import FlairEmbeddings
 from flair.embeddings import DocumentPoolEmbeddings
+from flair.embeddings import WordEmbeddings
+from flair.embeddings import WordEmbeddings
+from flair.embeddings import ELMoEmbeddings
 import argparse
 
 
@@ -44,7 +47,7 @@ import senteval
 params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': False, 'kfold': 10}
 
 
-f=[]
+f=[WordEmbeddings('glove')]
 for i in params.embeddings:
   f.append(FlairEmbeddings(i))
 flair_encoder = DocumentPoolEmbeddings(f)
@@ -77,7 +80,7 @@ def batcher(params, batch):
     for sent in  sentences: 
         embeddings.append(sent.embedding.numpy())
         
-    #embeddings = np.vstack(embeddings)
+    embeddings = np.vstack(embeddings)
     return embeddings
   
 
