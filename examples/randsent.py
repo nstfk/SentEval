@@ -60,13 +60,9 @@ def get_results(params, seed):
         'batch_size': params.se_batch_size, 'network': network
     }, batcher, prepare)
 
-    if params.task_type == "downstream":
-        results = se.eval(['MR', 'CR', 'MPQA', 'SUBJ', 'SST2', 'TREC', 'MRPC', 'SICKRelatedness',
-                           'SICKEntailment', 'STSBenchmark'])
-    else:
-        results = se.eval(
-            ['Length', 'WordContent', 'Depth', 'TopConstituents', 'BigramShift', 'Tense',
-             'SubjNumber', 'ObjNumber', 'OddManOut', 'CoordinationInversion'])
+    
+    results = se.eval(['BIOSSES','ClinicalSTS','MEDNLI'])
+    
     return results
 
 def consolidate(results, total_results):
