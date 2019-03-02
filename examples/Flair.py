@@ -20,6 +20,7 @@ from flair.embeddings import BertEmbeddings
 from flair.embeddings import ELMoEmbeddings
 from flair.embeddings import DocumentPoolEmbeddings
 import argparse
+tf.logging.set_verbosity(0)
 
 
 parser = argparse.ArgumentParser(description='Flair Embeddings')
