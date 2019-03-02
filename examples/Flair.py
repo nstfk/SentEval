@@ -7,9 +7,7 @@ import sklearn
 import torch
 import keras
 import os
-import sys
 from allennlp.commands.elmo import ElmoEmbedder
-import numpy as np
 import random
 from flair.data import Sentence
 from flair.embeddings import WordEmbeddings
@@ -20,7 +18,6 @@ from flair.embeddings import BertEmbeddings
 from flair.embeddings import ELMoEmbeddings
 from flair.embeddings import DocumentPoolEmbeddings
 import argparse
-tf.logging.set_verbosity(0)
 
 
 parser = argparse.ArgumentParser(description='Flair Embeddings')
