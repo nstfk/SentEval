@@ -70,17 +70,16 @@ def batcher(params, batch):
     """
     """
     embeddings = []
-    sents=[]
+    sentences=[]
     # if a sentence is empty dot is set to be the only token
     # you can change it into NULL dependening in your model
     batch = [sent if sent != [] else ['.'] for sent in batch]
     for sent in batch:
       sentence = Sentence(' '.join(w for w in sent))
-      sents.append(sentence)
+      sentences.append(sentence)
     #print(batch)
     params_senteval['flair'].embed(sents)
-       
-    #for elmo_embedding in params.elmo.embed_sentences(batch):  
+      
     for sent in  sentences:  
         embeddings.append(sent.embedding)
         
