@@ -52,6 +52,7 @@ for i in params.embeddings:
   f.append(FlairEmbeddings(i))
 flair_encoder = DocumentPoolEmbeddings(f)
 params_senteval['flair'] = flair_encoder
+print(params_senteval['flair'])
 
 nhid=params.nhid
 params_senteval['classifier'] ={'nhid': nhid, 'optim': 'adam','batch_size': 64, 'tenacity': 5,'epoch_size': 4}
