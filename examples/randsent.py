@@ -53,7 +53,7 @@ def get_results(params, seed):
         network = ESN(params)
 
     se = senteval.engine.SE({
-        'task_path': os.path.join(params.senteval_path, 'data'),
+        'task_path': os.path.join(params.data_path),
         'word_emb_file': params.word_emb_file, 'word_emb_dim': params.word_emb_dim,
         'usepytorch': True, 'kfold': params.n_folds, 'feat_dim': senteval_feat_dim,
         'random_word_embeddings': params.random_word_embeddings, 'seed': seed,
@@ -88,17 +88,22 @@ if __name__ == '__main__':
     parser.add_argument("--model",
                 help="Type of model to use (either borep, esn, or lstm, default borep).",
                         choices=["borep","esn", "lstm"], default="borep")
-    parser.add_argument("--task_type",
-                help="Type of task to try (either downstream or probing, default downstream).",
-                        choices=["downstream", "probing"], default="downstream")
     parser.add_argument("--n_folds", type=int,
-                help="Number of folds for cross-validation in SentEval (default 10).", default=10)
+                help="Number of folds for cross-validation in 
+                        
+                        
+                        
+                        
+                        
+                        
+                        (default 10).", default=10)
     parser.add_argument("--se_batch_size", type=int,
                 help="Batch size for embedding sentences in SentEval (default 16).", default=8)
     parser.add_argument("--gpu", type=int, choices=[0,1],
                 help="Whether to use GPU (default 0).", default=0)
-    parser.add_argument("--senteval_path", type=str,
-                help="Path to SentEval (default ./SentEval).", default="./SentEval")
+    
+    parser.add_argument("--data_path", type=str,
+                help="Path to data (default ./data).", default="./data")
     parser.add_argument("--word_emb_file", type=str,
                 help="Path to word embeddings file (default ./glove.840B.300d.txt).", default="./glove.840B.300d.txt")
     parser.add_argument("--word_emb_dim", type=int,
@@ -165,8 +170,9 @@ if __name__ == '__main__':
         params.input_dim *= 2
     if params.concat_inp:
         senteval_feat_dim += params.input_dim
-
-    sys.path.insert(0, params.senteval_path)
+    
+    PATH_TO_SENTEVAL = '../SentEval'
+    sys.path.insert(0, PATH_TO_SENTEVAL)
     import senteval
 
     seeds = [10, 100, 1000, 10000, 100000]
