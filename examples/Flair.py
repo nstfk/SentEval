@@ -24,19 +24,13 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Flair Embeddings')
 
-parser.add_argument("-data_path", type=str, default='./data', help="Path to data folder")
+parser.add_argument("--data_path", type=str, default='./data', help="Path to data folder")
 parser.add_argument('--embeddings', '-flair', nargs='+', default=['news-forward-fast', 'news-backward-fast'],help="Types of embeddin to be used")
 parser.add_argument("--nhid", type=int, default=0, help="number of hidden layers: 0 for Logistic Regression or >0 for MLP")
 
 params, _ = parser.parse_known_args()
 
 print(params)
-
-
-
-print(flair_encoder)
-#print(params)
-
 
 # Set up logger
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
