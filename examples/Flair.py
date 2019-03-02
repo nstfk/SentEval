@@ -70,10 +70,12 @@ def batcher(params, batch):
     for sent in batch:
       sentence = Sentence(' '.join(w for w in sent))
       sentences.append(sentence)
+      print(sentence)
     #print(batch)
     params_senteval['flair'].embed(sentences)
       
-    for sent in  sentences:  
+    for sent in  sentences: 
+        print(sent.embedding.shape)
         embeddings.append(sent.embedding)
         
     embeddings = np.vstack(embeddings)
