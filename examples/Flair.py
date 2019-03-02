@@ -75,7 +75,7 @@ def batcher(params, batch):
     params_senteval['flair'].embed(sentences)
       
     for sent in  sentences: 
-        embeddings.append(sent.embedding.numpyarray)
+        embeddings.append(sent.embedding.numpy())
         
     embeddings = np.vstack(embeddings)
     return embeddings
