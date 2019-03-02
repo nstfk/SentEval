@@ -78,7 +78,7 @@ def batcher(params, batch):
       sentence = Sentence(' '.join(w for w in sent))
       sentences.append(sentence)
     #print(batch)
-    params_senteval['flair'].embed(sents)
+    params_senteval['flair'].embed(sentences)
       
     for sent in  sentences:  
         embeddings.append(sent.embedding)
