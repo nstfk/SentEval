@@ -10,12 +10,7 @@ import os
 from allennlp.commands.elmo import ElmoEmbedder
 import random
 from flair.data import Sentence
-from flair.embeddings import WordEmbeddings
-from flair.embeddings import CharacterEmbeddings
-from flair.embeddings import StackedEmbeddings
 from flair.embeddings import FlairEmbeddings
-from flair.embeddings import BertEmbeddings
-from flair.embeddings import ELMoEmbeddings
 from flair.embeddings import DocumentPoolEmbeddings
 import argparse
 
