@@ -21,7 +21,7 @@ import argparse
 parser = argparse.ArgumentParser(description='Flair Embeddings')
 
 parser.add_argument("--data_path", type=str, default='./data', help="Path to data folder")
-parser.add_argument('--embeddings', '-flair', nargs='+', default=['news-forward', 'news-backward'],help="Types of embeddin to be used")
+parser.add_argument('--embeddings', '-flair', nargs='+', default=[FlairEmbeddings('news-forward'), FlairEmbeddings('news-backward')],help="Types of embeddin to be used")
 parser.add_argument("--nhid", type=int, default=0, help="number of hidden layers: 0 for Logistic Regression or >0 for MLP")
 
 params, _ = parser.parse_known_args()
@@ -47,9 +47,10 @@ import senteval
 params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': False, 'kfold': 10}
 
 
-f=[WordEmbeddings('glove')]
+f=[]
 for i in params.embeddings:
-  f.append(FlairEmbeddings(i))
+  #f.append(FlairEmbeddings(i))
+  f.append(i)
 flair_encoder = DocumentPoolEmbeddings(f)
 params_senteval['flair'] = flair_encoder
 print(params_senteval['flair'])
@@ -76,8 +77,8 @@ def batcher(params, batch):
       sentences.append(sentence)
       
     #print(batch)
-    #params_senteval['flair'].embed(sentences)
-    flair_encoder.embed(sentences)
+    params_senteval['flair'].embed(sentences)
+    #flair_encoder.embed(sentences)
       
     for sent in  sentences: 
         embeddings.append(sent.embedding.numpy())
