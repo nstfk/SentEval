@@ -30,7 +30,7 @@ parser.add_argument("--nhid", type=int, default=0, help="number of hidden layers
 
 params, _ = parser.parse_known_args()
 
-print(params)
+#print(params)
 
 # Set up logger
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
