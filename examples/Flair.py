@@ -50,7 +50,7 @@ params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': False, 'kfold': 10}
 f=[]
 for i in params.embeddings:
   #f.append(FlairEmbeddings(i))
-  f.append(i)
+  f.append(eval(i))
 flair_encoder = DocumentPoolEmbeddings(f)
 params_senteval['flair'] = flair_encoder
 print(params_senteval['flair'])
