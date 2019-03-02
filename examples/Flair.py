@@ -9,9 +9,9 @@ import keras
 import os
 from allennlp.commands.elmo import ElmoEmbedder
 import random
-from flair.data import Sentence
-from flair.embeddings import FlairEmbeddings
-from flair.embeddings import DocumentPoolEmbeddings
+#from flair.data import Sentence
+#from flair.embeddings import FlairEmbeddings
+#from flair.embeddings import DocumentPoolEmbeddings
 import argparse
 
 
