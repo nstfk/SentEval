@@ -86,6 +86,8 @@ class SE(object):
             self.evaluation = SNLIEval(tpath + '/downstream/SNLI', seed=self.params.seed)
         elif name == 'MEDNLI':
             self.evaluation = SNLIEval(tpath + '/MEDNLI', seed=self.params.seed)
+        elif name == 'RQE':
+            self.evaluation = RQEEval(tpath + '/RQE', seed=self.params.seed)
         elif name in ['STS14']:
             fpath ='sts-en-test-gs-2014'
             self.evaluation = eval(name + 'Eval')(tpath + '/STS14' , seed=self.params.seed)
