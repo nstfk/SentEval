@@ -29,8 +29,8 @@ params, _ = parser.parse_known_args()
 
 print(params)
 
-logging.getLogger("flair").setLevel(logging.WARNING)
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
+logging.getLogger("flair").setLevel(logging.WARNING)
 logging.info("FLAIR MODEL [https://github.com/zalandoresearch/flair]")
 
 
