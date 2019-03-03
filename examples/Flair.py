@@ -19,8 +19,6 @@ from flair.embeddings import ELMoEmbeddings
 from flair.embeddings import BertEmbeddings
 import argparse
 
-logging.getLogger("requests")
-
 parser = argparse.ArgumentParser(description='Flair Embeddings')
 
 parser.add_argument("--data_path", type=str, default='./data', help="Path to data folder")
@@ -32,10 +30,13 @@ params, _ = parser.parse_known_args()
 print(params)
 
 # Set up logger
-logger = logging.getLogger('SentEval')
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': True,
+})
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
-logger.info("FLAIR MODEL [https://github.com/zalandoresearch/flair]")
-logger.propagate = False
+logging.info("FLAIR MODEL [https://github.com/zalandoresearch/flair]")
+
 
 # Set PATHs
 PATH_SENTEVAL = '../'
