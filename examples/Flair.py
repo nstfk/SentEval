@@ -28,9 +28,9 @@ parser.add_argument("--nhid", type=int, default=0, help="number of hidden layers
 params, _ = parser.parse_known_args()
 
 print(params)
+logging.getLogger("flair").disabled=True
+#logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
 
-logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
-logging.getLogger("flair").setLevel(logging.WARNING)
 logging.info("FLAIR MODEL [https://github.com/zalandoresearch/flair]")
 
 
