@@ -14,7 +14,7 @@ import torch.nn as nn
 import numpy as np
 
 import utils
-from models import BOREP, ESN, RandLSTM
+from randsent_models import BOREP, ESN, RandLSTM
 
 def prepare(params, samples):
     words = set([])
