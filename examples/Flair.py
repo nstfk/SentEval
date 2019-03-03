@@ -33,7 +33,7 @@ print(params)
 
 # Set up logger
 logger = logging.getLogger('SentEval')
-logger.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
 logger.info("FLAIR MODEL [https://github.com/zalandoresearch/flair]")
 logger.propagate = False
 
