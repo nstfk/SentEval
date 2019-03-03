@@ -29,11 +29,7 @@ params, _ = parser.parse_known_args()
 
 print(params)
 
-# Set up logger
-logging.config.dictConfig({
-    'version': 1,
-    'disable_existing_loggers': True,
-})
+logging.getLogger("flair").setLevel(logging.WARNING)
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
 logging.info("FLAIR MODEL [https://github.com/zalandoresearch/flair]")
 
