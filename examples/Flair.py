@@ -9,6 +9,7 @@ import keras
 import os
 #from allennlp.commands.elmo import ElmoEmbedder
 import random
+import flair
 from flair.data import Sentence
 from flair.embeddings import FlairEmbeddings
 from flair.embeddings import DocumentPoolEmbeddings
@@ -18,6 +19,7 @@ from flair.embeddings import ELMoEmbeddings
 from flair.embeddings import BertEmbeddings
 import argparse
 
+logging.getLogger("requests")
 
 parser = argparse.ArgumentParser(description='Flair Embeddings')
 
@@ -30,8 +32,10 @@ params, _ = parser.parse_known_args()
 print(params)
 
 # Set up logger
-logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
-logging.info("FLAIR MODEL [https://github.com/zalandoresearch/flair]")
+logger = logging.getLogger('SentEval')
+logger.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
+logger.info("FLAIR MODEL [https://github.com/zalandoresearch/flair]")
+logger.propagate = False
 
 # Set PATHs
 PATH_SENTEVAL = '../'
