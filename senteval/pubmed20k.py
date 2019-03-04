@@ -112,4 +112,4 @@ class PUBMED20KEval(object):
                       .format(devacc, testacc))
         return {'devacc': devacc, 'acc': testacc,
                 'ndev': len(self.valid['X']),
-                'ntest': len(self.data['X'])}
+                'ntest': len(self.test['X'])}
