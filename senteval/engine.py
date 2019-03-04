@@ -15,6 +15,7 @@ from __future__ import absolute_import, division, unicode_literals
 from senteval import utils
 from senteval.binary import CREval, MREval, MPQAEval, SUBJEval
 from senteval.snli import SNLIEval
+from senteval.rqe import RQEEval
 from senteval.trec import TRECEval
 from senteval.sick import SICKRelatednessEval, SICKEntailmentEval
 from senteval.mrpc import MRPCEval
