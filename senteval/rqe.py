@@ -54,7 +54,6 @@ class RQEEval(object):
                   rqe_data['pid'].append(text[0])
                 except:
                   pass
-        print(len(rqe_data['chq']),len(rqe_data['faq']),len(rqe_data['label']),len(rqe_data['pid']))
         return rqe_data
 
     def run(self, params, batcher):
@@ -75,7 +74,6 @@ class RQEEval(object):
             text_data['pid'] = [w for (x, y, z, w ) in sorted_corpus]
             for txt_type in ['chq', 'faq']:
                 rqe_embed[key][txt_type] = []
-                logging.info('len text : {0}'.format(len(text_data['label'])))
                 for ii in range(0, len(text_data['label']), params.batch_size):
                     batch = text_data[txt_type][ii:ii + params.batch_size]
                     embeddings = batcher(params, batch)
