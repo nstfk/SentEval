@@ -28,7 +28,7 @@ class PUBMED20KEval(object):
         self.valid = self.loadFile(os.path.join(task_path, 'dev.txt'))
 
     def do_prepare(self, params, prepare):
-        samples = self.train['X'] + self.test['X']
+        samples = self.train['X'] + self.test['X']+self.valid['X']
         return prepare(params, samples)
 
     def loadFile(self, fpath):
@@ -47,7 +47,7 @@ class PUBMED20KEval(object):
         return data
 
     def run(self, params, batcher):
-        train_embeddings, test_embeddings = [], []
+        train_embeddings, valid_embeddings, test_embeddings = [], [], []
 
         # Sort to reduce padding
         sorted_corpus_train = sorted(zip(self.train['X'], self.train['y']),
@@ -78,7 +78,7 @@ class PUBMED20KEval(object):
             batch = valid_samples[ii:ii + params.batch_size]
             embeddings = batcher(params, batch)
             valid_embeddings.append(embeddings)
-        train_embeddings = np.vstack(valid_embeddings)
+        valid_embeddings = np.vstack(valid_embeddings)
         logging.info('Computed Validation embeddings')
 
         # Get test embeddings
