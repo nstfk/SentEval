@@ -17,16 +17,16 @@ import io
 import logging
 import numpy as np
 
-from senteval.tools.validation import KFoldClassifier
+from senteval.tools.validation import SplitClassifier
 
 
 class PICOEval(object):
     def __init__(self, task_path, seed=1111):
-        logging.info('***** Transfer task : PUBMED 20K *****\n\n')
+        logging.info('***** Transfer task : PICO *****\n\n')
         self.seed = seed
-        self.train = self.loadFile(os.path.join(task_path, 'train.txt'))
-        self.test = self.loadFile(os.path.join(task_path, 'test.txt'))
-        self.valid = self.loadFile(os.path.join(task_path, 'dev.txt'))
+        self.train = self.loadFile(os.path.join(task_path, 'PICO_train.txt'))
+        self.test = self.loadFile(os.path.join(task_path, 'PICO_test.txt'))
+        self.valid = self.loadFile(os.path.join(task_path, 'PICO_dev.txt'))
 
     def do_prepare(self, params, prepare):
         samples = self.train['X'] + self.test['X']+self.valid['X']
@@ -34,8 +34,7 @@ class PICOEval(object):
 
     def loadFile(self, fpath):
         data = {'X': [], 'y': []}
-        tgt2idx = {'BACKGROUND': 0, 'OBJECTIVE': 1, 'METHODS': 2,
-                   'RESULTS': 3, 'CONCLUSIONS': 4}
+        tgt2idx = {'A': 0, 'P': 1, 'I': 2,'O': 3, 'M': 4,'R': 5, 'C': 6}
         with io.open(fpath, 'r', encoding='latin-1') as f:
             for line in f:
                 try:
@@ -90,7 +89,7 @@ class PICOEval(object):
         test_embeddings = np.vstack(test_embeddings)
         logging.info('Computed test embeddings')
         
-        config = {'nclasses': 5, 'seed': self.seed,
+        config= {'nclasses': 5, 'seed': self.seed,
                   'usepytorch': params.usepytorch,
                   'cudaEfficient': True,
                   'nhid': params.nhid, 'noreg': True}
@@ -106,10 +105,10 @@ class PICOEval(object):
                               y={'train': train_labels,
                                  'valid': valid_labels,
                                  'test': test_labels},
-                              config=config_classifier)
+                              config=config)
         devacc, testacc = clf.run()
-        logging.debug('Dev acc : {0} Test acc : {1} for SNLI\n'
+        logging.debug('Dev acc : {0} Test acc : {1} for PUBMED20K\n'
                       .format(devacc, testacc))
         return {'devacc': devacc, 'acc': testacc,
-                'ndev': len(self.data['valid'][0]),
-                'ntest': len(self.data['test'][0])}
+                'ndev': len(self.valid['X']),
+                'ntest': len(self.test['X'])}
