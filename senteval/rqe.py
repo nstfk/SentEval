@@ -15,7 +15,7 @@ import logging
 import numpy as np
 import io
 
-#from senteval.tools.validation import KFoldClassifier
+from senteval.tools.validation import KFoldClassifier
 
 from sklearn.metrics import f1_score
 
@@ -46,6 +46,7 @@ class RQEEval(object):
                 text = line.strip().split('\t')
                 
                 try:
+                  #print(text[0],"-",text[1],"-",text[2],"-",text[3])
                   rqe_data['faq'].append(text[3].split())
                   rqe_data['chq'].append(text[2].split())
                   rqe_data['label'].append(text[1])
@@ -53,6 +54,7 @@ class RQEEval(object):
                 except:
                   pass
         print(len(rqe_data['chq']),len(rqe_data['faq']),len(rqe_data['label']),len(rqe_data['pid']))
+        #print(rqe_data)
         return rqe_data
 
     def run(self, params, batcher):
@@ -72,31 +74,6 @@ class RQEEval(object):
             text_data['label'] = [z for (x, y, z, w ) in sorted_corpus]
             text_data['pid'] = [w for (x, y, z, w ) in sorted_corpus]
             
-            for txt_type in ['chq', 'faq']:
-                rqe_embed[key][txt_type] = []
-                for ii in range(0, len(text_data['label']), params.batch_size):
-                    batch = text_data[txt_type][ii:ii + params.batch_size]
-                    
-                    
-
-    def run(self, params, batcher):
-        rqe_embed = {'train': {}, 'test': {}}
-
-        for key in self.rqe_data:
-            logging.info('Computing embedding for {0}'.format(key))
-            # Sort to reduce padding
-            text_data = {}
-            sorted_corpus = sorted(zip(self.rqe_data[key]['chq'],
-                                       self.rqe_data[key]['faq'],
-                                       self.rqe_data[key]['label']
-                                       self.rqe_data[key]['pid']),
-                                   key=lambda z: (len(z[0]), len(z[1]), z[2]))
-
-            text_data['chq'] = [x for (x, y, z, w) in sorted_corpus]
-            text_data['faq'] = [y for (x, y, z, w) in sorted_corpus]
-            text_data['label'] = [z for (x, y, z, w ) in sorted_corpus]
-            text_data['pid'] = [w for (x, y, z, w ) in sorted_corpus]
-
             for txt_type in ['chq', 'faq']:
                 rqe_embed[key][txt_type] = []
                 for ii in range(0, len(text_data['label']), params.batch_size):
