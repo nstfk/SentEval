@@ -22,21 +22,17 @@ from senteval.tools.validation import SplitClassifier
 
 class SNLIEval(object):
     def __init__(self, taskpath, seed=1111):
-        logging.debug('***** Transfer task : MEDNLI Entailment*****\n\n')
+        logging.debug('***** Transfer task : RQE Entailment*****\n\n')
         self.seed = seed
-        train1 = self.loadFile(os.path.join(taskpath, 's1.train'))
-        train2 = self.loadFile(os.path.join(taskpath, 's2.train'))
+        train1 = self.loadFile(os.path.join(taskpath, 'chq.train'))
+        train2 = self.loadFile(os.path.join(taskpath, 'faq.train'))
 
         trainlabels = io.open(os.path.join(taskpath, 'labels.train'),
                               encoding='utf-8').read().splitlines()
 
-        valid1 = self.loadFile(os.path.join(taskpath, 's1.dev'))
-        valid2 = self.loadFile(os.path.join(taskpath, 's2.dev'))
-        validlabels = io.open(os.path.join(taskpath, 'labels.dev'),
-                              encoding='utf-8').read().splitlines()
-
-        test1 = self.loadFile(os.path.join(taskpath, 's1.test'))
-        test2 = self.loadFile(os.path.join(taskpath, 's2.test'))
+        
+        test1 = self.loadFile(os.path.join(taskpath, 'chq.test'))
+        test2 = self.loadFile(os.path.join(taskpath, 'faq.test'))
         testlabels = io.open(os.path.join(taskpath, 'labels.test'),
                              encoding='utf-8').read().splitlines()
 
@@ -45,17 +41,12 @@ class SNLIEval(object):
                               key=lambda z: (len(z[0]), len(z[1]), z[2]))
         train2, train1, trainlabels = map(list, zip(*sorted_train))
 
-        sorted_valid = sorted(zip(valid2, valid1, validlabels),
-                              key=lambda z: (len(z[0]), len(z[1]), z[2]))
-        valid2, valid1, validlabels = map(list, zip(*sorted_valid))
-
         sorted_test = sorted(zip(test2, test1, testlabels),
                              key=lambda z: (len(z[0]), len(z[1]), z[2]))
         test2, test1, testlabels = map(list, zip(*sorted_test))
 
-        self.samples = train1 + train2 + valid1 + valid2 + test1 + test2
+        self.samples = train1 + train2 +  test1 + test2
         self.data = {'train': (train1, train2, trainlabels),
-                     'valid': (valid1, valid2, validlabels),
                      'test': (test1, test2, testlabels)
                      }
 
@@ -69,7 +60,7 @@ class SNLIEval(object):
 
     def run(self, params, batcher):
         self.X, self.y = {}, {}
-        dico_label = {'entailment': 0,  'neutral': 1, 'contradiction': 2}
+        dico_label = {'false': 0,  'true': 1}
         for key in self.data:
             if key not in self.X:
                 self.X[key] = []
@@ -99,7 +90,7 @@ class SNLIEval(object):
                 continue
 
 
-        config = {'nclasses': 3, 'seed': self.seed,
+        config = {'nclasses': 2, 'seed': self.seed,
                   'usepytorch': params.usepytorch,
                   'cudaEfficient': True,
                   'nhid': params.nhid, 'noreg': True}
