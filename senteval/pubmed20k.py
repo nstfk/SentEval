@@ -74,7 +74,7 @@ class PUBMED20KEval(object):
         logging.info('Computed train embeddings')
         
         # Get validation embeddings
-        for ii in range(0, len(train_labels), params.batch_size):
+        for ii in range(0, len(valid_labels), params.batch_size):
             batch = valid_samples[ii:ii + params.batch_size]
             embeddings = batcher(params, batch)
             valid_embeddings.append(embeddings)
