@@ -19,7 +19,7 @@ import numpy as np
 from senteval.tools.validation import KFoldClassifier
 
 
-class PUBMED20KEval(object):
+class TRECEval(object):
     def __init__(self, task_path, seed=1111):
         logging.info('***** Transfer task : PUBMED 20K *****\n\n')
         self.seed = seed
