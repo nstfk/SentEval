@@ -108,5 +108,5 @@ class RQEEval(object):
         logging.debug('Dev acc : {0} Test acc {1}; Test F1 {2} for RQE.\n'
                       .format(devacc, testacc, testf1))
         return {'devacc': devacc, 'acc': testacc, 'f1': testf1,
-                'ndev': len(trainA), 'ntest': len(testA)}
+                'ndev': len(trainCF), 'ntest': len(testCF)}
 
