@@ -49,7 +49,7 @@ class PyTorchClassifier(object):
             devX, devy = X[devidx], y[devidx]
 
         device = torch.device('cpu') if self.cudaEfficient else torch.device('cuda')
-        logging.info("" + str(type(X)) + str(type(y)) + str(type(trainX)) + str(type(trainy)) + str(type(devX)) + str(
+        #logging.info("" + str(type(X)) + str(type(y)) + str(type(trainX)) + str(type(trainy)) + str(type(devX)) + str(
             type(devy)))
         trainX = torch.from_numpy(trainX).to(device, dtype=torch.float32)
         trainy = torch.from_numpy(np.array(trainy)).to(device, dtype=torch.int64)
