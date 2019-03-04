@@ -90,7 +90,7 @@ class PUBMED20KEval(object):
         test_embeddings = np.vstack(test_embeddings)
         logging.info('Computed test embeddings')
         
-        config = {'nclasses': 5, 'seed': self.seed,
+        config_classifier = {'nclasses': 5, 'seed': self.seed,
                   'usepytorch': params.usepytorch,
                   'cudaEfficient': True,
                   'nhid': params.nhid, 'noreg': True}
@@ -106,7 +106,7 @@ class PUBMED20KEval(object):
                               y={'train': train_labels,
                                  'valid': valid_labels,
                                  'test': test_labels},
-                              config)
+                              config=config_classifier)
         devacc, testacc = clf.run()
         logging.debug('Dev acc : {0} Test acc : {1} for SNLI\n'
                       .format(devacc, testacc))
