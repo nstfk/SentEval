@@ -38,12 +38,12 @@ class PICOEval(object):
         with io.open(fpath, 'r', encoding='latin-1') as f:
             for line in f:
                 try:
-                  label, text = line.split('\t')
+                  section,label,text = line.split('|')
                   data['X'].append(text)
                   data['y'].append(tgt2idx[label])
                 except:
                   pass
-        #print(len(trec_data['X']),len(trec_data['y']))
+        print(len(data['X']),len(data['y']))
         return data
 
     def run(self, params, batcher):
