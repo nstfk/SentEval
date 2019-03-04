@@ -12,6 +12,7 @@
 from __future__ import absolute_import, division, unicode_literals
 
 import os
+import copy
 import io
 import logging
 import numpy as np
