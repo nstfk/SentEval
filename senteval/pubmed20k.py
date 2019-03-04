@@ -106,7 +106,7 @@ class PUBMED20KEval(object):
                               y={'train': train_labels,
                                  'valid': valid_labels,
                                  'test': test_labels},
-                              config=config_classifier)
+                              config)
         devacc, testacc = clf.run()
         logging.debug('Dev acc : {0} Test acc : {1} for SNLI\n'
                       .format(devacc, testacc))
