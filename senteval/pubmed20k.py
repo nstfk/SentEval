@@ -17,7 +17,7 @@ import io
 import logging
 import numpy as np
 
-from senteval.tools.validation import KFoldClassifier
+from senteval.tools.validation import SplitClassifier
 
 
 class PUBMED20KEval(object):
