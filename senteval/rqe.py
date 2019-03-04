@@ -73,7 +73,7 @@ class RQEEval(object):
             text_data['faq'] = [y for (x, y, z, w) in sorted_corpus]
             text_data['label'] = [z for (x, y, z, w ) in sorted_corpus]
             text_data['pid'] = [w for (x, y, z, w ) in sorted_corpus]
-            logging.info('len text : {0} {1} {2} {3}'.format(len(rqe_data['chq']),len(rqe_data['faq']),len(rqe_data['label']),len(rqe_data['pid'])))
+            #logging.info('len text : {0} {1} {2} {3}'.format(len(rqe_data['chq']),len(rqe_data['faq']),len(rqe_data['label']),len(rqe_data['pid'])))
             logging.info('len text : {0} {1} {2} {3}'.format(len(text_data['chq']),len(text_data['faq']),len(text_data['label']),len(text_data['pid'])))
             for txt_type in ['chq', 'faq']:
                 rqe_embed[key][txt_type] = []
