@@ -107,7 +107,7 @@ class PICOEval(object):
                                  'test': test_labels},
                               config=config)
         devacc, testacc = clf.run()
-        logging.debug('Dev acc : {0} Test acc : {1} for PUBMED20K\n'
+        logging.debug('Dev acc : {0} Test acc : {1} for PICO\n'
                       .format(devacc, testacc))
         return {'devacc': devacc, 'acc': testacc,
                 'ndev': len(self.valid['X']),
