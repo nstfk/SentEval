@@ -76,10 +76,11 @@ class RQEEval(object):
             
             for txt_type in ['chq', 'faq']:
                 rqe_embed[key][txt_type] = []
+                logging.info('len text : {0}'.format(len(text_data['label'])))
                 for ii in range(0, len(text_data['label']), params.batch_size):
                     batch = text_data[txt_type][ii:ii + params.batch_size]
                     embeddings = batcher(params, batch)
-                    logging.debug('len text : {0} len emb : {1} \for TREC\n'.format(len(text_data[txt_type][ii:ii + params.batch_size]),len(embeddings)))
+                    logging.info('len text : {0} len emb : {1} \for TREC\n'.format(len(text_data[txt_type][ii:ii + params.batch_size]),len(embeddings)))
                     print(len(text_data[txt_type][ii:ii + params.batch_size]),len(embeddings))
                     rqe_embed[key][txt_type].append(embeddings)
                 rqe_embed[key][txt_type] = np.vstack(rqe_embed[key][txt_type])
