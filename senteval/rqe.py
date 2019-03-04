@@ -30,7 +30,7 @@ class RQEEval(object):
                              'rqe_test.txt'))
         
         self.rqe_data = {'train': train, 'test': test}
-        print(self.rqe_data['train'])
+        
 
     def do_prepare(self, params, prepare):
         # TODO : Should we separate samples in "train, test"?
@@ -53,8 +53,7 @@ class RQEEval(object):
                   rqe_data['pid'].append(text[0])
                 except:
                   pass
-        print(len(rqe_data['chq']),len(rqe_data['faq']),len(rqe_data['label']),len(rqe_data['pid']))
-        #print(rqe_data)
+        #print(len(rqe_data['chq']),len(rqe_data['faq']),len(rqe_data['label']),len(rqe_data['pid']))
         return rqe_data
 
     def run(self, params, batcher):
