@@ -20,7 +20,7 @@ import numpy as np
 from senteval.tools.validation import SplitClassifier
 
 
-class SNLIEval(object):
+class RQEEval(object):
     def __init__(self, taskpath, seed=1111):
         logging.debug('***** Transfer task : RQE Entailment*****\n\n')
         self.seed = seed
