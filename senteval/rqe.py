@@ -79,6 +79,7 @@ class RQEEval(object):
                 for ii in range(0, len(text_data['label']), params.batch_size):
                     batch = text_data[txt_type][ii:ii + params.batch_size]
                     embeddings = batcher(params, batch)
+                    print(len(embeddings)
                     rqe_embed[key][txt_type].append(embeddings)
                 rqe_embed[key][txt_type] = np.vstack(rqe_embed[key][txt_type])
             rqe_embed[key]['label'] = np.array(text_data['label'])
