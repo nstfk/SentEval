@@ -109,4 +109,4 @@ class RQEEval(object):
                       .format(devacc, testacc, testf1))
         return {'devacc': devacc, 'acc': testacc, 'f1': testf1,
                 'ndev': len(trainA), 'ntest': len(testA)}
-© 2019 GitHub, Inc.
+
