@@ -73,16 +73,12 @@ class RQEEval(object):
             text_data['faq'] = [y for (x, y, z, w) in sorted_corpus]
             text_data['label'] = [z for (x, y, z, w ) in sorted_corpus]
             text_data['pid'] = [w for (x, y, z, w ) in sorted_corpus]
-            #logging.info('len text : {0} {1} {2} {3}'.format(len(rqe_data['chq']),len(rqe_data['faq']),len(rqe_data['label']),len(rqe_data['pid'])))
-            logging.info('len text : {0} {1} {2} {3}'.format(len(text_data['chq']),len(text_data['faq']),len(text_data['label']),len(text_data['pid'])))
             for txt_type in ['chq', 'faq']:
                 rqe_embed[key][txt_type] = []
                 logging.info('len text : {0}'.format(len(text_data['label'])))
                 for ii in range(0, len(text_data['label']), params.batch_size):
                     batch = text_data[txt_type][ii:ii + params.batch_size]
                     embeddings = batcher(params, batch)
-                    logging.info('len text : {0} len emb : {1} \for TREC\n'.format(len(text_data[txt_type][ii:ii + params.batch_size]),len(embeddings)))
-                    print(len(text_data[txt_type][ii:ii + params.batch_size]),len(embeddings))
                     rqe_embed[key][txt_type].append(embeddings)
                 rqe_embed[key][txt_type] = np.vstack(rqe_embed[key][txt_type])
             rqe_embed[key]['label'] = np.array(text_data['label'])
