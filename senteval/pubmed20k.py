@@ -21,7 +21,7 @@ from senteval.tools.validation import KFoldClassifier
 
 class TRECEval(object):
     def __init__(self, task_path, seed=1111):
-        logging.info('***** Transfer task : TREC *****\n\n')
+        logging.info('***** Transfer task : PUBMED 20K *****\n\n')
         self.seed = seed
         self.train = self.loadFile(os.path.join(task_path, 'train_5500.label'))
         self.test = self.loadFile(os.path.join(task_path, 'TREC_10.label'))
@@ -32,8 +32,8 @@ class TRECEval(object):
 
     def loadFile(self, fpath):
         trec_data = {'X': [], 'y': []}
-        tgt2idx = {'ABBR': 0, 'DESC': 1, 'ENTY': 2,
-                   'HUM': 3, 'LOC': 4, 'NUM': 5}
+        tgt2idx = {'background': 0, 'objective': 1, 'method': 2,
+                   'result': 3, 'conclusion': 4}
         with io.open(fpath, 'r', encoding='latin-1') as f:
             for line in f:
                 target, sample = line.strip().split(':', 1)
