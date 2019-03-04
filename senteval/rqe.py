@@ -24,15 +24,15 @@ class SNLIEval(object):
     def __init__(self, taskpath, seed=1111):
         logging.debug('***** Transfer task : RQE Entailment*****\n\n')
         self.seed = seed
-        train1 = self.loadFile(os.path.join(taskpath, 'chq.train'))
-        train2 = self.loadFile(os.path.join(taskpath, 'faq.train'))
+        train1 = self.loadFile(os.path.join(taskpath, 'chqs.train'))
+        train2 = self.loadFile(os.path.join(taskpath, 'faqs.train'))
 
         trainlabels = io.open(os.path.join(taskpath, 'labels.train'),
                               encoding='utf-8').read().splitlines()
 
         
-        test1 = self.loadFile(os.path.join(taskpath, 'chq.test'))
-        test2 = self.loadFile(os.path.join(taskpath, 'faq.test'))
+        test1 = self.loadFile(os.path.join(taskpath, 'chqs.test'))
+        test2 = self.loadFile(os.path.join(taskpath, 'faqs.test'))
         testlabels = io.open(os.path.join(taskpath, 'labels.test'),
                              encoding='utf-8').read().splitlines()
 
