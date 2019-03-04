@@ -6,104 +6,130 @@
 #
 
 '''
-SNLI - Entailment
+RQE : Recognizing Question Entailment for Medical Question Answering 
 '''
 from __future__ import absolute_import, division, unicode_literals
 
-import codecs
 import os
-import io
-import copy
 import logging
 import numpy as np
+import io
 
-from senteval.tools.validation import SplitClassifier
+#from senteval.tools.validation import KFoldClassifier
+
+from sklearn.metrics import f1_score
 
 
 class RQEEval(object):
-    def __init__(self, taskpath, seed=1111):
-        logging.debug('***** Transfer task : RQE Entailment*****\n\n')
+    def __init__(self, task_path, seed=1111):
+        logging.info('***** Transfer task : RQE *****\n\n')
         self.seed = seed
-        train1 = self.loadFile(os.path.join(taskpath, 'chqs.train'))
-        train2 = self.loadFile(os.path.join(taskpath, 'faqs.train'))
-
-        trainlabels = io.open(os.path.join(taskpath, 'labels.train'),
-                              encoding='utf-8').read().splitlines()
-
+        train = self.loadFile(os.path.join(task_path,
+                              'rqe_train.txt'))
+        test = self.loadFile(os.path.join(task_path,
+                             'rqe_test.txt'))
         
-        test1 = self.loadFile(os.path.join(taskpath, 'chqs.test'))
-        test2 = self.loadFile(os.path.join(taskpath, 'faqs.test'))
-        testlabels = io.open(os.path.join(taskpath, 'labels.test'),
-                             encoding='utf-8').read().splitlines()
-
-        # sort data (by s2 first) to reduce padding
-        sorted_train = sorted(zip(train2, train1, trainlabels),
-                              key=lambda z: (len(z[0]), len(z[1]), z[2]))
-        train2, train1, trainlabels = map(list, zip(*sorted_train))
-
-        sorted_test = sorted(zip(test2, test1, testlabels),
-                             key=lambda z: (len(z[0]), len(z[1]), z[2]))
-        test2, test1, testlabels = map(list, zip(*sorted_test))
-
-        self.samples = train1 + train2 +  test1 + test2
-        self.data = {'train': (train1, train2, trainlabels),
-                     'test': (test1, test2, testlabels)
-                     }
+        self.rqe_data = {'train': train, 'test': test}
+        print(self.rqe_data['train'])
 
     def do_prepare(self, params, prepare):
-        return prepare(params, self.samples)
+        # TODO : Should we separate samples in "train, test"?
+        samples = self.rqe_data['train']['chq'] + \
+                  self.rqe_data['train']['faq'] + \
+                  self.rqe_data['test']['chq'] + self.rqe_data['test']['faq']
+        return prepare(params, samples)
 
     def loadFile(self, fpath):
-        with codecs.open(fpath, 'rb', 'latin-1') as f:
-            return [line.split() for line in
-                    f.read().splitlines()]
+        rqe_data = {'chq': [], 'faq': [], 'label': [],'pid':[]}
+        with io.open(fpath, 'r', encoding='utf-8') as f:
+            for line in f:
+                text = line.strip().split('\t')
+                
+                try:
+                  rqe_data['faq'].append(text[3].split())
+                  rqe_data['chq'].append(text[2].split())
+                  rqe_data['label'].append(text[1])
+                  rqe_data['pid'].append(text[0])
+                except:
+                  pass
+        print(len(rqe_data['chq']),len(rqe_data['faq']),len(rqe_data['label']),len(rqe_data['pid']))
+        return rqe_data
 
     def run(self, params, batcher):
-        self.X, self.y = {}, {}
-        dico_label = {'false': 0,  'true': 1}
-        for key in self.data:
-            if key not in self.X:
-                self.X[key] = []
-            if key not in self.y:
-                self.y[key] = []
+        rqe_embed = {'train': {}, 'test': {}}
 
-            input1, input2, mylabels = self.data[key]
-            enc_input = []
-            n_labels = len(mylabels)
-            for ii in range(0,n_labels, params.batch_size):
-                batch1 = input1[ii:ii + params.batch_size]
-                batch2 = input2[ii:ii + params.batch_size]
+        for key in self.rqe_data:
+            logging.info('Computing embedding for {0}'.format(key))
+            # Sort to reduce padding
+            text_data = {}
+            sorted_corpus = sorted(zip(self.rqe_data[key]['chq'],
+                                       self.rqe_data[key]['faq'],
+                                       self.rqe_data[key]['label'],
+                                       self.rqe_data[key]['pid']),
+                                   key=lambda z: (len(z[0]), len(z[1]), z[2]))
+            text_data['chq'] = [x for (x, y, z, w) in sorted_corpus]
+            text_data['faq'] = [y for (x, y, z, w) in sorted_corpus]
+            text_data['label'] = [z for (x, y, z, w ) in sorted_corpus]
+            text_data['pid'] = [w for (x, y, z, w ) in sorted_corpus]
+            
+            for txt_type in ['chq', 'faq']:
+                rqe_embed[key][txt_type] = []
+                for ii in range(0, len(text_data['label']), params.batch_size):
+                    batch = text_data[txt_type][ii:ii + params.batch_size]
+                    
+                    
 
-                if len(batch1) == len(batch2) and len(batch1) > 0:
-                    enc1 = batcher(params, batch1)
-                    enc2 = batcher(params, batch2)
-                    enc_input.append(np.hstack((enc1, enc2, enc1 * enc2,
-                                                np.abs(enc1 - enc2))))
-                if (ii*params.batch_size) % (200*params.batch_size) == 0:
-                    logging.info("PROGRESS (encoding): %.2f%%" %
-                                 (100 * ii / n_labels))
-            self.X[key] = np.vstack(enc_input)
-            try:
-                self.y[key] = [dico_label[y] for y in mylabels]
-            except:
-                logging.info(' key error')
-                continue
+    def run(self, params, batcher):
+        rqe_embed = {'train': {}, 'test': {}}
 
+        for key in self.rqe_data:
+            logging.info('Computing embedding for {0}'.format(key))
+            # Sort to reduce padding
+            text_data = {}
+            sorted_corpus = sorted(zip(self.rqe_data[key]['chq'],
+                                       self.rqe_data[key]['faq'],
+                                       self.rqe_data[key]['label']
+                                       self.rqe_data[key]['pid']),
+                                   key=lambda z: (len(z[0]), len(z[1]), z[2]))
+
+            text_data['chq'] = [x for (x, y, z, w) in sorted_corpus]
+            text_data['faq'] = [y for (x, y, z, w) in sorted_corpus]
+            text_data['label'] = [z for (x, y, z, w ) in sorted_corpus]
+            text_data['pid'] = [w for (x, y, z, w ) in sorted_corpus]
+
+            for txt_type in ['chq', 'faq']:
+                rqe_embed[key][txt_type] = []
+                for ii in range(0, len(text_data['label']), params.batch_size):
+                    batch = text_data[txt_type][ii:ii + params.batch_size]
+                    embeddings = batcher(params, batch)
+                    rqe_embed[key][txt_type].append(embeddings)
+                rqe_embed[key][txt_type] = np.vstack(rqe_embed[key][txt_type])
+            rqe_embed[key]['label'] = np.array(text_data['label'])
+            logging.info('Computed {0} embeddings'.format(key))
+
+        # Train
+        trainC = rqe_embed['train']['chq']
+        trainF = rqe_embed['train']['faq']
+        trainCF = np.c_[np.abs(trainC - trainF), trainC * trainF]
+        trainY = mrpc_embed['train']['label']
+
+        # Test
+        testC = mrpc_embed['test']['chq']
+        testF = mrpc_embed['test']['faq']
+        testCF = np.c_[np.abs(testC - testF), testC * testF]
+        testY = mrpc_embed['test']['label']
 
         config = {'nclasses': 2, 'seed': self.seed,
                   'usepytorch': params.usepytorch,
-                  'cudaEfficient': True,
-                  'nhid': params.nhid, 'noreg': True}
+                  'classifier': params.classifier,
+                  'nhid': params.nhid, 'kfold': params.kfold}
+        clf = KFoldClassifier(train={'X': trainCF, 'y': trainY},
+                              test={'X': testCF, 'y': testY}, config=config)
 
-        config_classifier = copy.deepcopy(params.classifier)
-        config_classifier['max_epoch'] = 15
-        config_classifier['epoch_size'] = 1
-        config['classifier'] = config_classifier
-
-        clf = SplitClassifier(self.X, self.y, config)
-        devacc, testacc = clf.run()
-        logging.debug('Dev acc : {0} Test acc : {1} for SNLI\n'
-                      .format(devacc, testacc))
-        return {'devacc': devacc, 'acc': testacc,
-                'ndev': len(self.data['valid'][0]),
-                'ntest': len(self.data['test'][0])}
+        devacc, testacc, yhat = clf.run()
+        testf1 = round(100*f1_score(testY, yhat), 2)
+        logging.debug('Dev acc : {0} Test acc {1}; Test F1 {2} for MRPC.\n'
+                      .format(devacc, testacc, testf1))
+        return {'devacc': devacc, 'acc': testacc, 'f1': testf1,
+                'ndev': len(trainA), 'ntest': len(testA)}
+© 2019 GitHub, Inc.
