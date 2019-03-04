@@ -87,13 +87,13 @@ class RQEEval(object):
         trainC = rqe_embed['train']['chq']
         trainF = rqe_embed['train']['faq']
         trainCF = np.c_[np.abs(trainC - trainF), trainC * trainF]
-        trainY = mrpc_embed['train']['label']
+        trainY = rqe_embed['train']['label']
 
         # Test
-        testC = mrpc_embed['test']['chq']
-        testF = mrpc_embed['test']['faq']
+        testC = rqe_embed['test']['chq']
+        testF = rqe_embed['test']['faq']
         testCF = np.c_[np.abs(testC - testF), testC * testF]
-        testY = mrpc_embed['test']['label']
+        testY = rqe_embed['test']['label']
 
         config = {'nclasses': 2, 'seed': self.seed,
                   'usepytorch': params.usepytorch,
