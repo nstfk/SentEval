@@ -34,7 +34,6 @@ params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 10}
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
 logging.info("-------------------------------------ELMO MODEL [ALLENNLP]-------------------------------------"+"\nPATH_TO_DATA: " + str(PATH_TO_DATA) +"\nPATH_TO_VEC: "+ str(PATH_TO_VEC))
 
-
 nhid=params.nhid
 
 # import SentEval
@@ -49,13 +48,13 @@ params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 5}
 # usepytorch = False 
 
 #Load ELMO model
-if (params.model=='pubmed')
+if (params.model=='pubmed'):
 	options_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/contributed/pubmed/elmo_2x4096_512_2048cnn_2xhighway_options.json'
 	weight_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/contributed/pubmed/elmo_2x4096_512_2048cnn_2xhighway_weights_PubMed_only.hdf5'
-elif (params.model=='small')
+elif (params.model=='small'):
 	options_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x1024_128_2048cnn_1xhighway/elmo_2x1024_128_2048cnn_1xhighway_options.json'
 	weight_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x1024_128_2048cnn_1xhighway/elmo_2x1024_128_2048cnn_1xhighway_weights.hdf5'
-elif  (params.model=='original')
+elif  (params.model=='original'):
 	options_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x4096_512_2048cnn_2xhighway_5.5B/elmo_2x4096_512_2048cnn_2xhighway_5.5B_options.json'
 	weight_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x4096_512_2048cnn_2xhighway_5.5B/elmo_2x4096_512_2048cnn_2xhighway_5.5B_weights.hdf5'
 
