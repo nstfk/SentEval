@@ -19,7 +19,7 @@ parser = argparse.ArgumentParser(description='Flair Embeddings')
 parser.add_argument("--data_path", type=str, default='./data', help="Path to data (default ./data)")
 parser.add_argument("--nhid", type=int, default=0, help="number of hidden layers: 0 for Logistic Regression or >0 for MLP (default 0)")
 parser.add_argument('--tasks', nargs='+', default=['BIOSSES', 'ClinicalSTS', 'PICO' ,'PUBMED20K','RQE','MEDNLI','ClinicalSTS2'] ,help="Bio Tasks to evaluate (default [BIOSSES ClinicalSTS PICO PUBMED20K RQE MEDNLI RQE] )")
-parser.add_argument('--mode', type=str, choices=['original','small','pubmed'],default= 'original',help="ELMO MODEL (default original)")
+parser.add_argument('--model', type=str, choices=['original','small','pubmed'],default= 'original',help="ELMO Model (default original)")
 params, _ = parser.parse_known_args()
 # Set PATHs
 PATH_TO_SENTEVAL = '../'
