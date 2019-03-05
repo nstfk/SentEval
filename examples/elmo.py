@@ -54,7 +54,7 @@ elif  (params.model=='original'):
 	options_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x4096_512_2048cnn_2xhighway_5.5B/elmo_2x4096_512_2048cnn_2xhighway_5.5B_options.json'
 	weight_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x4096_512_2048cnn_2xhighway_5.5B/elmo_2x4096_512_2048cnn_2xhighway_5.5B_weights.hdf5'
 
-elmo_encoder = ElmoEmbedder(params.options_file,params.weight_file,cuda_device=0)
+elmo_encoder = ElmoEmbedder(options_file,weight_file,cuda_device=0)
 params_senteval['elmo'] = elmo_encoder
 params_senteval['classifier'] ={'nhid': nhid, 'optim': 'adam','batch_size': 64, 'tenacity': 5,'epoch_size': 4}
 def s_embedding(word_embeds, rule='MEAN'):
