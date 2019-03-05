@@ -23,7 +23,7 @@ parser.add_argument('--tasks', nargs='+', default=['BIOSSES', 'ClinicalSTS', 'PI
 
 params, _ = parser.parse_known_args()
 # Set PATHs
-PATH_SENTEVAL = '../'
+PATH_TO_SENTEVAL = '../'
 PATH_TO_DATA = params.data_path
 PATH_TO_VEC =  params.embedding_path
 params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 10}
