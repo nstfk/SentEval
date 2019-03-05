@@ -29,7 +29,9 @@ params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 10}
 # Set up logger
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
 logging.info("-------------------------------------ELMO [ALLENNLP]-------------------------------------"+"\nPATH_TO_DATA: " + str(PATH_TO_DATA) +"\nELMO_model: "+ str(params.model)+"\nTASKS: "+ str(params.tasks))
-
+transfer_tasks=[]
+    for i in params.tasks:
+        transfer_tasks.append(i)
 nhid=params.nhid
 
 # import SentEval
@@ -114,10 +116,6 @@ def batcher(params, batch):
 
 if __name__ == "__main__":
     se = senteval.engine.SE(params_senteval, batcher, prepare)
-    
-    transfer_tasks=[]
-    for i in params.tasks:
-        transfer_tasks.append(i)
     results = se.eval(transfer_tasks)
     # senteval prints the results and returns a dictionary with the scores
     results = se.eval(transfer_tasks)
