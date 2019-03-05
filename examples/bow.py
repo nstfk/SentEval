@@ -19,7 +19,7 @@ parser.add_argument("--data_path", type=str, default='./data', help="Path to dat
 parser.add_argument('--embedding_path', type=str, default= './embeddings',help="Path to embeddings (default ./embeddings/glove/glove.840B.300d.txt")
 parser.add_argument("--nhid", type=int, default=0, help="number of hidden layers: 0 for Logistic Regression or >0 for MLP (default 0)")
 
-parser.add_argument('--tasks', '-flair', nargs='+', default=BIOSSES ClinicalSTS PICO PUBMED20K RQE MEDNLI RQE ClinicalSTS2 ,help="Bio Tasks to evaluate (default [BIOSSES ClinicalSTS PICO PUBMED20K RQE MEDNLI RQE] )")
+parser.add_argument('--tasks', nargs='+', default=BIOSSES ClinicalSTS PICO PUBMED20K RQE MEDNLI RQE ClinicalSTS2 ,help="Bio Tasks to evaluate (default [BIOSSES ClinicalSTS PICO PUBMED20K RQE MEDNLI RQE] )")
 
 params, _ = parser.parse_known_args()
 `1# Set PATHs
