@@ -12,18 +12,33 @@ from allennlp.commands.elmo import ElmoEmbedder
 import numpy as np
 import random
 
+import argparse
+
+parser = argparse.ArgumentParser(description='Flair Embeddings')
+
+parser.add_argument("--data_path", type=str, default='./data', help="Path to data (default ./data)")
+parser.add_argument('--embedding_path', type=str, default= './embeddings',help="Path to embeddings (default ./embeddings/glove/glove.840B.300d.txt")
+parser.add_argument("--nhid", type=int, default=0, help="number of hidden layers: 0 for Logistic Regression or >0 for MLP (default 0)")
+
+parser.add_argument('--tasks', nargs='+', default=['BIOSSES', 'ClinicalSTS', 'PICO' ,'PUBMED20K','RQE','MEDNLI','ClinicalSTS2'] ,help="Bio Tasks to evaluate (default [BIOSSES ClinicalSTS PICO PUBMED20K RQE MEDNLI RQE] )")
+parser.add_argument('--mode', type=str, choices=['original','small','pubmed'],default= 'original',help="ELMO MODEL (default original)")
+
+params, _ = parser.parse_known_args()
+# Set PATHs
+PATH_TO_SENTEVAL = '../'
+PATH_TO_DATA = params.data_path
+PATH_TO_VEC =  params.embedding_path
+params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 10}
+
 # Set up logger
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
-logging.info("ELMO MODEL [ALLENNLP] (params: Path to Data , options_file[optional], weight file[optional] , Num of Hidden Layers[optional] ) ")
-logging.info("\n\n\nPATH_TO_DATA: " + str(sys.argv[1])+ "\n\n")
+logging.info("-------------------------------------ELMO MODEL [ALLENNLP]-------------------------------------"+"\nPATH_TO_DATA: " + str(PATH_TO_DATA) +"\nPATH_TO_VEC: "+ str(PATH_TO_VEC))
 
-# Set PATHs
-PATH_SENTEVAL = '../'
-PATH_TO_DATA = sys.argv[1]  # '../data'
 
+nhid=params.nhid
 
 # import SentEval
-sys.path.insert(0, PATH_SENTEVAL)
+sys.path.insert(0, PATH_TO_SENTEVAL)
 import senteval
 
 # Set params for SentEval
@@ -33,26 +48,20 @@ params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 5}
 # this is the config for the NN classifier but we are going to use scikit-learn logistic regression with 10 kfold
 # usepytorch = False 
 
-# Load ELMO model
-#options_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/contributed/pubmed/elmo_2x4096_512_2048cnn_2xhighway_options.json'
-#weight_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/contributed/pubmed/elmo_2x4096_512_2048cnn_2xhighway_weights_PubMed_only.hdf5'
+#Load ELMO model
+if (params.model=='pubmed')
+	options_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/contributed/pubmed/elmo_2x4096_512_2048cnn_2xhighway_options.json'
+	weight_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/contributed/pubmed/elmo_2x4096_512_2048cnn_2xhighway_weights_PubMed_only.hdf5'
+elif (params.model=='small')
+	options_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x1024_128_2048cnn_1xhighway/elmo_2x1024_128_2048cnn_1xhighway_options.json'
+	weight_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x1024_128_2048cnn_1xhighway/elmo_2x1024_128_2048cnn_1xhighway_weights.hdf5'
+elif  (params.model=='original')
+	options_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x4096_512_2048cnn_2xhighway_5.5B/elmo_2x4096_512_2048cnn_2xhighway_5.5B_options.json'
+	weight_file = 'https://s3-us-west-2.amazonaws.com/allennlp/models/elmo/2x4096_512_2048cnn_2xhighway_5.5B/elmo_2x4096_512_2048cnn_2xhighway_5.5B_weights.hdf5'
 
-
-if (len(sys.argv)==4):
-	elmo_encoder = ElmoEmbedder(sys.argv[2],sys.argv[3],cuda_device=0)
-else:
-	elmo_encoder = ElmoEmbedder(cuda_device=0)
+elmo_encoder = ElmoEmbedder(params.options_file,params.weight_file,cuda_device=0)
 params_senteval['elmo'] = elmo_encoder
-
-if (len(sys.argv)==5):
-    nhid = int(sys.argv[4])
-else:
-    nhid=0
 params_senteval['classifier'] ={'nhid': nhid, 'optim': 'adam','batch_size': 64, 'tenacity': 5,'epoch_size': 4}
-
-
-
-
 def s_embedding(word_embeds, rule='MEAN'):
     '''
     defines the type of sentence embedding
@@ -111,11 +120,11 @@ def batcher(params, batch):
 if __name__ == "__main__":
     se = senteval.engine.SE(params_senteval, batcher, prepare)
     
-    # here you define the NLP taks that your embedding model is going to be evaluated
-    # in (https://arxiv.org/abs/1802.05883) we use the following :
-    # SICKRelatedness (Sick-R) needs torch cuda to work (even when using logistic regression), 
-    # but STS14 (semantic textual similarity) is a similar type of semantic task
-    transfer_tasks = ['BIOSSES','ClinicalSTS']#,'MEDNLI']
+    transfer_tasks=[]
+    for i in params.tasks:
+        transfer_tasks.append(i)
+    results = se.eval(transfer_tasks)
     # senteval prints the results and returns a dictionary with the scores
     results = se.eval(transfer_tasks)
     print(results)
+    print("\n")
