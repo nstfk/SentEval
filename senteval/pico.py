@@ -43,7 +43,7 @@ class PICOEval(object):
                   data['y'].append(tgt2idx[label])
                 except:
                   pass
-        print(len(data['X']),len(data['y']))
+        #print(len(data['X']),len(data['y']))
         return data
 
     def run(self, params, batcher):
