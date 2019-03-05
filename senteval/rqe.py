@@ -48,8 +48,8 @@ class RQEEval(object):
                 
                 try:
                   #print(text[0],"-",text[1],"-",text[2],"-",text[3])
-                  rqe_data['faq'].append(text[3].split())
-                  rqe_data['chq'].append(text[2].split())
+                  rqe_data['faq'].append(text[3].split(' '))
+                  rqe_data['chq'].append(text[2].split(' '))
                   rqe_data['label'].append(tgt2idx[text[1]])
                   rqe_data['pid'].append(text[0])
                 except:
