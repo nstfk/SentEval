@@ -11,34 +11,29 @@ import sys
 import io
 import numpy as np
 import logging
+import argparse
 
+parser = argparse.ArgumentParser(description='Flair Embeddings')
 
-# Set PATHs
-PATH_TO_SENTEVAL = '../'
-PATH_TO_DATA = '../data'
-# PATH_TO_VEC = 'glove/glove.840B.300d.txt'
-PATH_TO_VEC = 'fasttext/crawl-300d-2M.vec'
+parser.add_argument("--data_path", type=str, default='./data', help="Path to data (default ./data)")
+parser.add_argument('--embedding_path', type=str, default= './embeddings',help="Path to embeddings (default ./embeddings/glove/glove.840B.300d.txt")
+parser.add_argument("--nhid", type=int, default=0, help="number of hidden layers: 0 for Logistic Regression or >0 for MLP (default 0)")
 
-# Set up logger
+parser.add_argument('--tasks', '-flair', nargs='+', default=BIOSSES ClinicalSTS PICO PUBMED20K RQE MEDNLI RQE ClinicalSTS2 ,help="Bio Tasks to evaluate (default [BIOSSES ClinicalSTS PICO PUBMED20K RQE MEDNLI RQE] )")
 
-logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
-logging.info("\nBOW MODEL (params: Path to Data & Num of Hidden Layers[optional} ) ")
-logging.info("\nPATH_TO_DATA: " + str(sys.argv[1]) +"\nPATH_TO_VEC: "+ str(sys.argv[2]))
-
-
-# Set PATHs
+params, _ = parser.parse_known_args()
+`1# Set PATHs
 PATH_SENTEVAL = '../'
-PATH_TO_DATA = sys.argv[1]#'../data'
-PATH_TO_VEC =  sys.argv[2]#'fasttext/crawl-300d-2M.vec'# 'glove/glove.840B.300d.txt'  # or crawl-300d-2M.vec for V2
-# define senteval params
+PATH_TO_DATA = params.data_path
+PATH_TO_VEC =  params.embedding_path
 params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 10}
 
-if (len(sys.argv)>5):
-    nhid = int(sys.argv[5])
-else:
-    nhid=0
+# Set up logger
+logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
+logging.info("\nBOW MODEL")
+logging.info("\nPATH_TO_DATA: " + str(PATH_TO_DATA) +"\nPATH_TO_VEC: "+ str(PATH_TO_VEC))
 
-#params_senteval['classifier'] = {'nhid':nhid , 'optim': 'rmsprop', 'batch_size': 128,'tenacity': 3, 'epoch_size': 2}
+nhid=params.nhid
 params_senteval['classifier'] ={'nhid': nhid, 'optim': 'adam','batch_size': 64, 'tenacity': 5,'epoch_size': 4}
 
 # import SentEval
@@ -121,6 +116,8 @@ logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
 
 if __name__ == "__main__":
     se = senteval.engine.SE(params_senteval, batcher, prepare)
-    transfer_tasks = ['PICO']#'PUBMED20K','BIOSSES','ClinicalSTS','MEDNLI','RQE','ClinicalSTS2']
+    transfer_tasks=[]
+````for i in params.tasks:
+        transfer_tasks.append(i)
     results = se.eval(transfer_tasks)
     print(results)
