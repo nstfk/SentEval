@@ -28,7 +28,7 @@ params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 10}
 
 # Set up logger
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
-logging.info("-------------------------------------ELMO MODEL [ALLENNLP]-------------------------------------"+"\nPATH_TO_DATA: " + str(PATH_TO_DATA) +"\nPATH_TO_VEC: "+ str(PATH_TO_VEC))
+logging.info("-------------------------------------ELMO MODEL [ALLENNLP]-------------------------------------"+"\nPATH_TO_DATA: " + str(PATH_TO_DATA) +"\nELMO_model: "+ str(params.model))
 
 nhid=params.nhid
 
