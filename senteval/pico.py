@@ -39,7 +39,7 @@ class PICOEval(object):
             for line in f:
                 try:
                   section,label,text = line.split('|')
-                  data['X'].append(text)
+                  data['X'].append(text.split(' ')
                   data['y'].append(tgt2idx[label])
                 except:
                   pass
