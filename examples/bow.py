@@ -22,7 +22,7 @@ parser.add_argument("--nhid", type=int, default=0, help="number of hidden layers
 parser.add_argument('--tasks', nargs='+', default=['BIOSSES', 'ClinicalSTS', 'PICO' ,'PUBMED20K','RQE','MEDNLI','ClinicalSTS2'] ,help="Bio Tasks to evaluate (default [BIOSSES ClinicalSTS PICO PUBMED20K RQE MEDNLI RQE] )")
 
 params, _ = parser.parse_known_args()
-`1# Set PATHs
+# Set PATHs
 PATH_SENTEVAL = '../'
 PATH_TO_DATA = params.data_path
 PATH_TO_VEC =  params.embedding_path
