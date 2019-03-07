@@ -40,7 +40,7 @@ class PUBMED20KEval(object):
             for line in f:
                 try:
                   label, text = line.split('\t')
-                  data['X'].append(text)
+                  data['X'].append(text.split(' '))
                   data['y'].append(tgt2idx[label])
                 except:
                   pass
