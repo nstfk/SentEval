@@ -48,7 +48,7 @@ class SE(object):
         self.batcher = batcher
         self.prepare = prepare if prepare else lambda x, y: None
 
-        self.list_tasks = ['PICO','PUBMED20K','MEDNLI', 'RQE','STSBenchmark','ClinicalSTS','ClinicalSTS2','BIOSSES']
+        self.list_tasks = ['CHEMPROT','PICO','PUBMED20K','MEDNLI', 'RQE','STSBenchmark','ClinicalSTS','ClinicalSTS2','BIOSSES']
                        
 
     def eval(self, name):
@@ -91,10 +91,12 @@ class SE(object):
             self.evaluation = SNLIEval(tpath + '/MEDNLI', seed=self.params.seed)
         elif name == 'RQE':
             self.evaluation = RQEEval(tpath + '/RQE', seed=self.params.seed)
-        elif name == 'PUBMED20K':
-            self.evaluation = PUBMED20KEval(tpath + '/PUBMED20K', seed=self.params.seed)
+        elif name == 'RCT20K':
+            self.evaluation = PUBMED20KEval(tpath + '/ RCT20K', seed=self.params.seed)
         elif name == 'PICO':
             self.evaluation = PICOEval(tpath + '/PICO', seed=self.params.seed)
+        elif name == 'CHEMPROT':
+            self.evaluation = PICOEval(tpath + '/CHEMPROT', seed=self.params.seed)
         elif name in ['STS14']:
             fpath ='sts-en-test-gs-2014'
             self.evaluation = eval(name + 'Eval')(tpath + '/STS14' , seed=self.params.seed)
