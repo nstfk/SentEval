@@ -17,7 +17,7 @@ from senteval.binary import CREval, MREval, MPQAEval, SUBJEval
 from senteval.snli import SNLIEval
 from senteval.rqe import RQEEval
 from senteval.trec import TRECEval
-from senteval.pubmed20k import PUBMED20KEval
+from senteval.rct20k import RCT20KEval
 from senteval.pico import PICOEval
 from senteval.sick import SICKRelatednessEval, SICKEntailmentEval
 from senteval.mrpc import MRPCEval
