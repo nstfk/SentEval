@@ -18,7 +18,7 @@ from senteval.snli import SNLIEval
 from senteval.rqe import RQEEval
 from senteval.trec import TRECEval
 from senteval.rct20k import RCT20KEval
-from senteval.bioc import BioCEval
+from senteval.bioc import BIOCEval
 from senteval.pico import PICOEval
 from senteval.sick import SICKRelatednessEval, SICKEntailmentEval
 from senteval.mrpc import MRPCEval
