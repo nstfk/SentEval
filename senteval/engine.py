@@ -18,6 +18,7 @@ from senteval.snli import SNLIEval
 from senteval.rqe import RQEEval
 from senteval.trec import TRECEval
 from senteval.rct20k import RCT20KEval
+from senteval.bioc import BioCEval
 from senteval.pico import PICOEval
 from senteval.sick import SICKRelatednessEval, SICKEntailmentEval
 from senteval.mrpc import MRPCEval
@@ -48,7 +49,7 @@ class SE(object):
         self.batcher = batcher
         self.prepare = prepare if prepare else lambda x, y: None
 
-        self.list_tasks = ['CHEMPROT','PICO','PUBMED20K','MEDNLI', 'RQE','STSBenchmark','ClinicalSTS','ClinicalSTS2','BIOSSES']
+        self.list_tasks = ['bioC','CHEMPROT','PICO','PUBMED20K','MEDNLI', 'RQE','STSBenchmark','ClinicalSTS','ClinicalSTS2','BIOSSES']
                        
 
     def eval(self, name):
@@ -91,6 +92,8 @@ class SE(object):
             self.evaluation = SNLIEval(tpath + '/MEDNLI', seed=self.params.seed)
         elif name == 'RQE':
             self.evaluation = RQEEval(tpath + '/RQE', seed=self.params.seed)
+        elif name == 'bioC':
+            self.evaluation = bioCEval(tpath + '/bioC', seed=self.params.seed)    
         elif name == 'RCT20K':
             self.evaluation = RCT20KEval(tpath + '/ RCT20K', seed=self.params.seed)
         elif name == 'PICO':
