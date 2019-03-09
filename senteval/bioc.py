@@ -30,7 +30,7 @@ class BioCEval(object):
     def do_prepare(self, params, prepare):
         # TODO : Should we separate samples in "train, test"?
         samples = self.data['train']['quest'] + \
-                  self.data['train']['claim'] + \
+                  self.data['train']['claim'] 
         return prepare(params, samples)
 
     def loadFile(self, fpath):
