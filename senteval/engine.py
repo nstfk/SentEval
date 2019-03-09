@@ -92,8 +92,8 @@ class SE(object):
             self.evaluation = SNLIEval(tpath + '/MEDNLI', seed=self.params.seed)
         elif name == 'RQE':
             self.evaluation = RQEEval(tpath + '/RQE', seed=self.params.seed)
-        elif name == 'bioC':
-            self.evaluation = bioCEval(tpath + '/bioC', seed=self.params.seed)    
+        elif name == 'BIOC':
+            self.evaluation = bioCEval(tpath + '/BIOC', seed=self.params.seed)    
         elif name == 'RCT20K':
             self.evaluation = RCT20KEval(tpath + '/ RCT20K', seed=self.params.seed)
         elif name == 'PICO':
