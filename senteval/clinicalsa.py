@@ -18,21 +18,33 @@ import logging
 from senteval.tools.validation import InnerKFoldClassifier
 
 
-class BinaryClassifierEval(object):
+class ClinicalSAEval(object):
     def __init__(self, pos, neg, seed=1111):
         self.seed = seed
-        self.samples, self.labels = pos + neg, [1] * len(pos) + [0] * len(neg)
+        self.train = self.loadFile(os.path.join(task_path, 'ClincalSA_train.txt'))
         self.n_samples = len(self.samples)
+        print(self.n_samples)
 
     def do_prepare(self, params, prepare):
         # prepare is given the whole text
+        samples = self.train['X']
         return prepare(params, self.samples)
         # prepare puts everything it outputs in "params" : params.word2id etc
         # Those output will be further used by "batcher".
 
     def loadFile(self, fpath):
+        data = {'X': [], 'y': []}
+        tgt2idx = {'Positive': 0, 'Neutral': 1, 'Unrelated': 2,'NegSafety': 3, 'NegOthers': 4,'NegEfficacy': 5, 'NegCost': 6,, 'NegResistant': 7}
         with io.open(fpath, 'r', encoding='latin-1') as f:
-            return [line.split() for line in f.read().splitlines()]
+            for line in f:
+                try:
+                  id,text,label = line.split('\t')
+                  data['X'].append(text.split(' '))
+                  data['y'].append(tgt2idx[label])
+                except:
+                  pass
+        #print(len(data['X']),len(data['y']))
+        return data
 
     def run(self, params, batcher):
         enc_input = []
@@ -49,7 +61,7 @@ class BinaryClassifierEval(object):
         enc_input = np.vstack(enc_input)
         logging.info('Generated sentence embeddings')
 
-        config = {'nclasses': 2, 'seed': self.seed,
+        config = {'nclasses': 8, 'seed': self.seed,
                   'usepytorch': params.usepytorch,
                   'classifier': params.classifier,
                   'nhid': params.nhid, 'kfold': params.kfold}
@@ -58,35 +70,3 @@ class BinaryClassifierEval(object):
         logging.debug('Dev acc : {0} Test acc : {1}\n'.format(devacc, testacc))
         return {'devacc': devacc, 'acc': testacc, 'ndev': self.n_samples,
                 'ntest': self.n_samples}
-
-
-class CREval(BinaryClassifierEval):
-    def __init__(self, task_path, seed=1111):
-        logging.debug('***** Transfer task : CR *****\n\n')
-        pos = self.loadFile(os.path.join(task_path, 'custrev.pos'))
-        neg = self.loadFile(os.path.join(task_path, 'custrev.neg'))
-        super(self.__class__, self).__init__(pos, neg, seed)
-
-
-class MREval(BinaryClassifierEval):
-    def __init__(self, task_path, seed=1111):
-        logging.debug('***** Transfer task : MR *****\n\n')
-        pos = self.loadFile(os.path.join(task_path, 'rt-polarity.pos'))
-        neg = self.loadFile(os.path.join(task_path, 'rt-polarity.neg'))
-        super(self.__class__, self).__init__(pos, neg, seed)
-
-
-class SUBJEval(BinaryClassifierEval):
-    def __init__(self, task_path, seed=1111):
-        logging.debug('***** Transfer task : SUBJ *****\n\n')
-        obj = self.loadFile(os.path.join(task_path, 'subj.objective'))
-        subj = self.loadFile(os.path.join(task_path, 'subj.subjective'))
-        super(self.__class__, self).__init__(obj, subj, seed)
-
-
-class MPQAEval(BinaryClassifierEval):
-    def __init__(self, task_path, seed=1111):
-        logging.debug('***** Transfer task : MPQA *****\n\n')
-        pos = self.loadFile(os.path.join(task_path, 'mpqa.pos'))
-        neg = self.loadFile(os.path.join(task_path, 'mpqa.neg'))
-        super(self.__class__, self).__init__(pos, neg, seed)
