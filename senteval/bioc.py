@@ -68,7 +68,7 @@ class BIOCEval(object):
                     batch = text_data[txt_type][ii:ii + params.batch_size]
                     embeddings = batcher(params, batch)
                     bioC_embed[key][txt_type].append(embeddings)
-                bioC_embed[key][txt_type] = np.vstack(rqe_embed[key][txt_type])
+                bioC_embed[key][txt_type] = np.vstack(bioC_embed[key][txt_type])
             bioC_embed[key]['label'] = np.array(text_data['label'])
             logging.info('Computed {0} embeddings'.format(key))
 
