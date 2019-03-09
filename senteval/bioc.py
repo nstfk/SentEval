@@ -24,7 +24,7 @@ class BIOCEval(object):
         self.seed = seed
         train = self.loadFile(os.path.join(task_path,
                               'train.txt'))
-        self.data = {'train': train, 'test': test}
+        self.data = {'train': train}
         
 
     def do_prepare(self, params, prepare):
@@ -49,7 +49,7 @@ class BIOCEval(object):
         return data
 
     def run(self, params, batcher):
-        bioC_embed = {'train': {}, 'test': {}}
+        bioC_embed = {'train': {}}
 
         for key in self.data:
             logging.info('Computing embedding for {0}'.format(key))
