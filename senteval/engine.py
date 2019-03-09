@@ -93,7 +93,7 @@ class SE(object):
         elif name == 'RQE':
             self.evaluation = RQEEval(tpath + '/RQE', seed=self.params.seed)
         elif name == 'BIOC':
-            self.evaluation = bioCEval(tpath + '/BIOC', seed=self.params.seed)    
+            self.evaluation = BIOCEval(tpath + '/BIOC', seed=self.params.seed)    
         elif name == 'RCT20K':
             self.evaluation = RCT20KEval(tpath + '/ RCT20K', seed=self.params.seed)
         elif name == 'PICO':
