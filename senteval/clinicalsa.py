@@ -21,7 +21,7 @@ from senteval.tools.validation import InnerKFoldClassifier
 class ClinicalSAEval(object):
     def __init__(self, pos, neg, seed=1111):
         self.seed = seed
-        self.train = self.loadFile(os.path.join(task_path, 'ClincalSA_train.txt'))
+        self.train = self.loadFile(os.path.join(task_path, 'train.txt'))
         self.n_samples = len(self.samples)
         print(self.n_samples)
 
@@ -38,7 +38,7 @@ class ClinicalSAEval(object):
         with io.open(fpath, 'r', encoding='latin-1') as f:
             for line in f:
                 try:
-                  id,text,label = line.split('\t')
+                  id,label,text = line.split('\t')
                   data['X'].append(text.split(' '))
                   data['y'].append(tgt2idx[label])
                 except:
