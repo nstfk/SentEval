@@ -102,7 +102,7 @@ class SE(object):
         elif name == 'PICO':
             self.evaluation = PICOEval(tpath + '/PICO', seed=self.params.seed)
         elif name == 'CHEMPROT':
-            self.evaluation = PICOEval(tpath + '/CHEMPROT', seed=self.params.seed)
+            self.evaluation = CHEMPROTEval(tpath + '/CHEMPROT', seed=self.params.seed)
         elif name in ['STS14']:
             fpath ='sts-en-test-gs-2014'
             self.evaluation = eval(name + 'Eval')(tpath + '/STS14' , seed=self.params.seed)
