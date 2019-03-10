@@ -34,7 +34,7 @@ class ClinicalSAEval(object):
 
     def loadFile(self, fpath):
         data = {'X': [], 'y': []}
-        tgt2idx = {'Positive': 0, 'Neutral': 1, 'Unrelated': 2,'NegSafety': 3, 'NegOthers': 4,'NegEfficacy': 5, 'NegCost': 6,, 'NegResistant': 7}
+        tgt2idx = {'Positive': 0, 'Neutral': 1, 'Unrelated': 2,'NegSafety': 3, 'NegOthers': 4,'NegEfficacy': 5, 'NegCost': 6,'NegResistant': 7}
         with io.open(fpath, 'r', encoding='latin-1') as f:
             for line in f:
                 try:
