@@ -23,8 +23,8 @@ class ClinicalSAEval(object):
     def __init__(self, task_path, seed=1111):
         self.seed = seed
         self.train = self.loadFile(os.path.join(task_path, 'train.txt'))
-        self.n_samples = len(self.samples)
-        print(self.n_samples)
+        #self.n_samples = len(self.samples)
+        #print(self.n_samples)
 
     def do_prepare(self, params, prepare):
         # prepare is given the whole text
@@ -50,7 +50,7 @@ class ClinicalSAEval(object):
     def run(self, params, batcher):
         enc_input = []
         # Sort to reduce padding
-        sorted_corpus = sorted(zip(self.samples, self.labels),
+        sorted_corpus = sorted(zip(data['X'], data['y']),
                                key=lambda z: (len(z[0]), z[1]))
         sorted_samples = [x for (x, y) in sorted_corpus]
         sorted_labels = [y for (x, y) in sorted_corpus]
