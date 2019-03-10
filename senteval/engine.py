@@ -22,6 +22,7 @@ from senteval.bioc import BIOCEval
 from senteval.pico import PICOEval
 from senteval.sick import SICKRelatednessEval, SICKEntailmentEval
 from senteval.mrpc import MRPCEval
+from senteval.clinicalsa import ClinicalSAEval
 from senteval.sts import STS14Eval, STSBenchmarkEval,ClinicalSTSEval,BIOSSESEval
 from senteval.sst import SSTEval
 from senteval.rank import ImageCaptionRetrievalEval
@@ -49,7 +50,7 @@ class SE(object):
         self.batcher = batcher
         self.prepare = prepare if prepare else lambda x, y: None
 
-        self.list_tasks = ['BIOC','CHEMPROT','PICO','PUBMED20K','MEDNLI', 'RQE','STSBenchmark','ClinicalSTS','ClinicalSTS2','BIOSSES']
+        self.list_tasks = ['ClinicalSA','BIOC','CHEMPROT','PICO','PUBMED20K','MEDNLI', 'RQE','STSBenchmark','ClinicalSTS','ClinicalSTS2','BIOSSES']
                        
 
     def eval(self, name):
@@ -93,7 +94,9 @@ class SE(object):
         elif name == 'RQE':
             self.evaluation = RQEEval(tpath + '/RQE', seed=self.params.seed)
         elif name == 'BIOC':
-            self.evaluation = BIOCEval(tpath + '/BIOC', seed=self.params.seed)    
+            self.evaluation = BIOCEval(tpath + '/BIOC', seed=self.params.seed)   
+        elif name == 'ClinicalSA':
+            self.evaluation = BIOCEval(tpath + '/ClinicalSA', seed=self.params.seed)   
         elif name == 'RCT20K':
             self.evaluation = RCT20KEval(tpath + '/ RCT20K', seed=self.params.seed)
         elif name == 'PICO':
