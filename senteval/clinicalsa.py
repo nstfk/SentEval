@@ -19,10 +19,10 @@ from senteval.tools.validation import InnerKFoldClassifier
 
 
 class ClinicalSAEval(object):
-    logging.info('***** Transfer task :Clinical Tweets Sentiment Analysis *****\n\n')
+    logging.info('***** Transfer task :Vactination Tweets Sentiment Analysis *****\n\n')
     def __init__(self, task_path, seed=1111):
         self.seed = seed
-        self.train = self.loadFile(os.path.join(task_path, 'train.txt'))
+        self.data = self.loadFile(os.path.join(task_path, 'train.txt'))
         #self.n_samples = len(self.samples)
         #print(self.n_samples)
 
@@ -50,7 +50,7 @@ class ClinicalSAEval(object):
     def run(self, params, batcher):
         enc_input = []
         # Sort to reduce padding
-        sorted_corpus = sorted(zip(data['X'], data['y']),
+        sorted_corpus = sorted(zip(self.data['X'], self.data['y']),
                                key=lambda z: (len(z[0]), z[1]))
         sorted_samples = [x for (x, y) in sorted_corpus]
         sorted_labels = [y for (x, y) in sorted_corpus]
