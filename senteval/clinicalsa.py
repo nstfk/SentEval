@@ -29,7 +29,7 @@ class ClinicalSAEval(object):
     def do_prepare(self, params, prepare):
         # prepare is given the whole text
         samples = self.train['X']
-        return prepare(params, self.samples)
+        return prepare(params, samples)
         # prepare puts everything it outputs in "params" : params.word2id etc
         # Those output will be further used by "batcher".
 
