@@ -18,7 +18,7 @@ import logging
 from senteval.tools.validation import InnerKFoldClassifier
 
 
-class ClinicalSAEval(object):
+class CitationSAEval(object):
     logging.info('***** Transfer task :Vaccination Tweets Sentiment Analysis *****\n\n')
     def __init__(self, task_path, seed=1111):
         self.seed = seed
