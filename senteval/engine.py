@@ -51,7 +51,7 @@ class SE(object):
         self.batcher = batcher
         self.prepare = prepare if prepare else lambda x, y: None
 
-        self.list_tasks = ['CitationSA','ClinicalSA','BIOC','CHEMPROT','PICO','PUBMED20K','MEDNLI', 'RQE','STSBenchmark','ClinicalSTS','ClinicalSTS2','BIOSSES']
+        self.list_tasks = ['BioC','CitationSA','ClinicalSA','BIOC','CHEMPROT','PICO','PUBMED20K','MEDNLI', 'RQE','STSBenchmark','ClinicalSTS','ClinicalSTS2','BIOSSES']
                        
 
     def eval(self, name):
@@ -94,7 +94,7 @@ class SE(object):
             self.evaluation = SNLIEval(tpath + '/MEDNLI', seed=self.params.seed)
         elif name == 'RQE':
             self.evaluation = RQEEval(tpath + '/RQE', seed=self.params.seed)
-        elif name == 'BIOC':
+        elif name == 'BioC':
             self.evaluation = BIOCEval(tpath + '/BIOC', seed=self.params.seed)   
         elif name == 'ClinicalSA':
             self.evaluation = ClinicalSAEval(tpath + '/ClinicalSA', seed=self.params.seed) 
