@@ -19,7 +19,7 @@ from senteval.tools.validation import InnerKFoldClassifier
 
 
 class CitationSAEval(object):
-    logging.info('***** Transfer task :Vaccination Tweets Sentiment Analysis *****\n\n')
+    logging.info('***** Transfer task :Biomedical Citation Sentiment Analysis *****\n\n')
     def __init__(self, task_path, seed=1111):
         self.seed = seed
         self.data = self.loadFile(os.path.join(task_path, 'train.txt'))
@@ -30,8 +30,7 @@ class CitationSAEval(object):
         # prepare is given the whole text
         samples = self.data['X']
         return prepare(params, samples)
-        # prepare puts everything it outputs in "params" : params.word2id etc
-        # Those output will be further used by "batcher".
+        
 
     def loadFile(self, fpath):
         data = {'X': [], 'y': []}
@@ -44,7 +43,7 @@ class CitationSAEval(object):
                   data['y'].append(tgt2idx[label])
                 except:
                   pass
-        print(len(data['X']),len(data['y']))
+        
         return data
 
     def run(self, params, batcher):
