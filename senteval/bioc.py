@@ -20,7 +20,7 @@ from sklearn.metrics import f1_score
 
 class BIOCEval(object):
     def __init__(self, task_path, seed=1111):
-        logging.info('***** Transfer task : BioContradictin *****\n\n')
+        logging.info('***** Transfer task : BioContradiction *****\n\n')
         self.seed = seed
         train = self.loadFile(os.path.join(task_path,
                               'train.txt'))
